@@ -20,26 +20,29 @@ function writeDB(data) {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2))
 }
 
+// rota principal (pra não dar erro)
+app.get("/", (req, res) => {
+    res.send("Servidor da Copa Brawl está online!")
+})
+
+// adicionar player
 app.post("/add", (req, res) => {
     let { nick, id } = req.body
 
-    // validação básica
     if (!nick || !id) {
         return res.status(400).send("Dados inválidos")
     }
 
-    if (nick.length > 20 || id.length > 20) {
+    if (nick.length > 100 || id.length > 50) {
         return res.status(400).send("Texto muito grande")
     }
 
     let db = readDB()
 
-    // limite de players
     if (db.length >= MAX_PLAYERS) {
         return res.status(400).send("Limite de 64 jogadores atingido")
     }
 
-    // evitar duplicados (mesmo ID)
     let existe = db.find(p => p.id === id)
     if (existe) {
         return res.status(400).send("Esse ID já foi registrado")
@@ -51,10 +54,12 @@ app.post("/add", (req, res) => {
     res.send("ok")
 })
 
+// listar players
 app.get("/list", (req, res) => {
     res.json(readDB())
 })
 
+// deletar player
 app.post("/delete", (req, res) => {
     let db = readDB()
     let { index } = req.body
@@ -69,4 +74,8 @@ app.post("/delete", (req, res) => {
     res.send("deleted")
 })
 
-app.listen(3000, () => console.log("Server rodando na porta 3000"))
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log("Server rodando na porta " + PORT)
+})
