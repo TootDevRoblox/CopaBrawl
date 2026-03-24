@@ -22,7 +22,7 @@ function writeDB(data) {
 
 // rota principal (pra não dar erro)
 app.get("/", (req, res) => {
-    res.send("Servidor da Copa Brawl está online!")
+    res.sendFile(path.join(__dirname, "public", "index.html"))
 })
 
 // adicionar player
