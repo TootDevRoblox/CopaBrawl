@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 // Adicionar player
 app.post("/add", (req, res) => {
-    let { nick, id } = req.body;
+    const { nick, id } = req.body;
 
     if (!nick || !id) return res.status(400).send("Dados inválidos");
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
@@ -44,7 +44,7 @@ app.post("/add", (req, res) => {
     if (players.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
     if (players.find(p => p.id === id)) return res.status(400).send("Esse ID já foi registrado");
 
-    players.push({ nick, id });
+    players.push({ nick, id, data: new Date() });
     salvarDatabase(players);
 
     res.send("ok");
@@ -71,4 +71,4 @@ app.post("/delete", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server rodando na porta " + PORT));
+app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
