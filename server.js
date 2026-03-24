@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ObjectId } = require("mongodb");
 const path = require("path");
+const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 app.use(express.json());
@@ -10,18 +10,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 3000;
 
-// MongoDB Atlas
-const MONGO_URI = "mongodb+srv://coconut4691_db_user:QZgqfGDuzdXTrTT6@data.nucbyqx.mongodb.net/brawl_inscricao?retryWrites=true&w=majority";
-const DB_NAME = "brawl_inscricao";
-let db;
-
-// Conecta no MongoDB
-MongoClient.connect(MONGO_URI)
-  .then(client => {
-      db = client.db(DB_NAME);
-      console.log("Conectado ao MongoDB Atlas!");
-  })
-  .catch(err => console.error("Erro ao conectar no MongoDB:", err));
+// 🔹 Configuração Supabase
+const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
+const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço (não usar anon key no server)
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 // Rota principal
 app.get("/", (req, res) => {
@@ -35,11 +27,17 @@ app.post("/add", async (req, res) => {
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
     try {
-        const existe = await db.collection("players").findOne({ id });
+        const { data: existe, error: findError } = await supabase
+            .from("players")
+            .select("*")
+            .eq("id", id)
+            .single();
+        if (findError && findError.code !== "PGRST116") throw findError; // ignora não encontrado
         if (existe) return res.status(400).send("ID já registrado");
 
-        await db.collection("players").insertOne({ nick, id });
-        console.log("Novo jogador adicionado:", { nick, id });
+        const { error } = await supabase.from("players").insert([{ nick, id }]);
+        if (error) throw error;
+
         res.send("ok");
     } catch (err) {
         console.error("Erro ao adicionar jogador:", err);
@@ -50,24 +48,23 @@ app.post("/add", async (req, res) => {
 // Listar jogadores
 app.get("/list", async (req, res) => {
     try {
-        const players = await db.collection("players").find().toArray();
-        res.json(players);
+        const { data, error } = await supabase.from("players").select("*");
+        if (error) throw error;
+        res.json(data);
     } catch (err) {
         console.error("Erro ao listar jogadores:", err);
         res.status(500).send("Erro no servidor");
     }
 });
 
-// Deletar jogador
+// Deletar jogador pelo ID
 app.post("/delete", async (req, res) => {
-    const { index } = req.body;
+    const { id } = req.body;
+    if (!id) return res.status(400).send("ID inválido");
 
     try {
-        const players = await db.collection("players").find().toArray();
-        if (index < 0 || index >= players.length) return res.status(400).send("Índice inválido");
-
-        await db.collection("players").deleteOne({ _id: ObjectId(players[index]._id) });
-        console.log("Jogador deletado:", players[index]);
+        const { error } = await supabase.from("players").delete().eq("id", id);
+        if (error) throw error;
         res.send("deleted");
     } catch (err) {
         console.error("Erro ao deletar jogador:", err);
