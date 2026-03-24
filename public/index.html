@@ -4,12 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copa Brawl</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* degradê azul escuro */
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(0,0,0,0.5); /* fundo semi-transparente */
+            padding: 40px 50px;
+            border-radius: 15px;
+            width: 350px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 8px #74ebd5;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: #74ebd5;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #67d2c6;
+        }
+
+        ul {
+            list-style: none;
+            margin-top: 20px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li button {
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul li button:hover {
+            background-color: #ff4c4c;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Copa Brawl</h1>
-        
+
         <div class="form-container">
             <input type="text" id="nick" placeholder="Digite seu nick">
             <input type="text" id="id" placeholder="Digite seu ID">
