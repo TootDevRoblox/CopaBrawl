@@ -1,74 +1,66 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const express = require("express")
+const fs = require("fs")
+const cors = require("cors")
+const path = require("path")
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+const app = express()
+app.use(express.json())
+app.use(cors())
 
-const MAX_PLAYERS = 64;
-const DATA_FILE = path.join(__dirname, "database.json");
+// ⚡ Serve a pasta public
+app.use(express.static(path.join(__dirname, "public")))
 
-// Função pra ler o JSON
-function lerDatabase() {
-    if (!fs.existsSync(DATA_FILE)) return [];
-    const data = fs.readFileSync(DATA_FILE);
-    try {
-        return JSON.parse(data);
-    } catch (err) {
-        console.error("Erro ao ler database.json:", err);
-        return [];
+const DB_FILE = "database.json"
+const MAX_PLAYERS = 64
+
+function readDB() {
+    if (!fs.existsSync(DB_FILE)) {
+        fs.writeFileSync(DB_FILE, "[]")
     }
+    return JSON.parse(fs.readFileSync(DB_FILE))
 }
 
-// Função pra salvar no JSON
-function salvarDatabase(players) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(players, null, 2));
+function writeDB(data) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2))
 }
 
-// Rota principal (index.html)
+// rota principal
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+    res.sendFile(path.join(__dirname, "public", "index.html"))
+})
 
-// Adicionar player
+// adicionar player
 app.post("/add", (req, res) => {
-    const { nick, id } = req.body;
+    let { nick, id } = req.body
+    if (!nick || !id) return res.status(400).send("Dados inválidos")
+    if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande")
 
-    if (!nick || !id) return res.status(400).send("Dados inválidos");
-    if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
+    let db = readDB()
+    if (db.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido")
 
-    const players = lerDatabase();
+    let existe = db.find(p => p.id === id)
+    if (existe) return res.status(400).send("Esse ID já foi registrado")
 
-    if (players.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
-    if (players.find(p => p.id === id)) return res.status(400).send("Esse ID já foi registrado");
+    db.push({ nick, id })
+    writeDB(db)
+    res.send("ok")
+})
 
-    players.push({ nick, id, data: new Date() });
-    salvarDatabase(players);
-
-    res.send("ok");
-});
-
-// Listar players
+// listar players
 app.get("/list", (req, res) => {
-    const players = lerDatabase();
-    res.json(players);
-});
+    res.json(readDB())
+})
 
-// Deletar player pelo ID
+// deletar player
 app.post("/delete", (req, res) => {
-    const { id } = req.body;
-    let players = lerDatabase();
+    let db = readDB()
+    let { index } = req.body
+    if (index < 0 || index >= db.length) return res.status(400).send("Índice inválido")
 
-    const lengthAntes = players.length;
-    players = players.filter(p => p.id !== id);
+    db.splice(index, 1)
+    writeDB(db)
+    res.send("deleted")
+})
 
-    if (players.length === lengthAntes) return res.status(400).send("ID inválido");
-
-    salvarDatabase(players);
-    res.send("deleted");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => console.log("Servidor da Copa Brawl está online! Porta:", PORT))
