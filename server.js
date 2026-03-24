@@ -1,82 +1,84 @@
-let isAdmin = false;
+const express = require("express");
+const fs = require("fs");
+const cors = require("cors");
+const path = require("path");
 
-// Função para enviar o jogador
-function enviar() {
-    const nick = document.getElementById("nick").value.trim();
-    const id = document.getElementById("id").value.trim();
+const app = express();
+app.use(express.json());
+app.use(cors());
 
-    if (!nick || !id) {
-        alert("Preencha os dois campos!");
-        return;
+// ⚡ Serve a pasta public
+app.use(express.static(path.join(__dirname, "public")));
+
+// Caminho absoluto para o arquivo de database
+const DB_FILE = path.join(__dirname, "database.json");
+const MAX_PLAYERS = 64;
+
+// Função para ler o database
+function readDB() {
+    if (!fs.existsSync(DB_FILE)) fs.writeFileSync(DB_FILE, "[]");
+    try {
+        const data = fs.readFileSync(DB_FILE, "utf8");
+        return JSON.parse(data);
+    } catch (e) {
+        console.error("Erro ao ler database.json:", e);
+        return [];
     }
+}
 
-    if (nick === "C#Lipeh777") {
-        isAdmin = true;
-        alert("Você é admin!");
+// Função para escrever no database
+function writeDB(data) {
+    try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
+        console.log("Database atualizado:", data);
+    } catch (e) {
+        console.error("Erro ao escrever database.json:", e);
     }
-
-    fetch("https://copabrawl.onrender.com/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nick, id })
-    })
-    .then(res => res.text())
-    .then(data => {
-        console.log("Resposta do servidor:", data);
-        if (data !== "ok") {
-            alert("Erro: " + data);
-        }
-        carregar();
-    })
-    .catch(err => {
-        console.error("Erro ao enviar:", err);
-        alert("Não foi possível enviar os dados. Veja o console.");
-    });
 }
 
-// Função para carregar a lista de jogadores
-function carregar() {
-    fetch("https://copabrawl.onrender.com/list")
-    .then(res => res.json())
-    .then(data => {
-        const lista = document.getElementById("lista");
-        lista.innerHTML = "";
+// rota principal
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
-        data.forEach((player, index) => {
-            const li = document.createElement("li");
-            li.innerText = player.nick + " - " + player.id;
+// adicionar player
+app.post("/add", (req, res) => {
+    const { nick, id } = req.body;
+    if (!nick || !id) return res.status(400).send("Dados inválidos");
+    if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
-            if (isAdmin) {
-                const btn = document.createElement("button");
-                btn.innerText = "Deletar";
-                btn.onclick = () => deletar(index);
-                li.appendChild(btn);
-            }
+    let db = readDB();
+    if (db.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
 
-            lista.appendChild(li);
-        });
-    })
-    .catch(err => {
-        console.error("Erro ao carregar lista:", err);
-    });
-}
+    const existe = db.find(p => p.id === id);
+    if (existe) return res.status(400).send("Esse ID já foi registrado");
 
-// Função para deletar um jogador (apenas admin)
-function deletar(index) {
-    fetch("https://copabrawl.onrender.com/delete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ index })
-    })
-    .then(res => res.text())
-    .then(data => {
-        console.log("Delete:", data);
-        carregar();
-    })
-    .catch(err => {
-        console.error("Erro ao deletar:", err);
-    });
-}
+    db.push({ nick, id });
+    writeDB(db);
 
-// Carrega a lista ao abrir a página
-carregar();
+    console.log(`Novo jogador adicionado: ${nick} (${id})`);
+    res.send("ok");
+});
+
+// listar players
+app.get("/list", (req, res) => {
+    res.json(readDB());
+});
+
+// deletar player
+app.post("/delete", (req, res) => {
+    const { index } = req.body;
+    let db = readDB();
+
+    if (index < 0 || index >= db.length) return res.status(400).send("Índice inválido");
+
+    const removido = db.splice(index, 1);
+    writeDB(db);
+
+    console.log(`Jogador deletado:`, removido[0]);
+    res.send("deleted");
+});
+
+// Porta do servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Servidor da Copa Brawl está online! Porta:", PORT));
