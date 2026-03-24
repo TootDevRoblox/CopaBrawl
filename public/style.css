@@ -1,0 +1,95 @@
+/* Reset simples */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+    width: 340px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+}
+
+input[type="text"]:focus {
+    border-color: #74ebd5;
+    box-shadow: 0 0 5px #74ebd5;
+}
+
+button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #74ebd5;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #67d2c6;
+}
+
+ul {
+    list-style: none;
+    text-align: left;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+ul li {
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f4f4f4;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul li button {
+    background-color: #ff6b6b;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+ul li button:hover {
+    background-color: #ff4c4c;
+}
