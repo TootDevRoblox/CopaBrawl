@@ -1,64 +1,66 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 
 const app = express();
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
 
-// === MongoDB URI ===
-const uri = "mongodb+srv://coconut4691_db_user:QZgqfGDuzdXTrTT6@data.nucbyqx.mongodb.net/brawl_inscricao?retryWrites=true&w=majority";
-const client = new MongoClient(uri);
-let db;
+const MAX_PLAYERS = 64;
 
-// Conectando ao MongoDB
+// Substitua pela sua string do MongoDB
+const MONGO_URI = "mongodb+srv://coconut4691_db_user:QZgqfGDuzdXTrTT6@data.nucbyqx.mongodb.net/";
+const client = new MongoClient(MONGO_URI);
+
+let db, playersCollection;
+
+// Conectar ao MongoDB
 async function connectDB() {
-    try {
-        await client.connect();
-        db = client.db("brawl_inscricao"); // nome do banco
-        console.log("Conectado ao MongoDB!");
-    } catch (err) {
-        console.error("Erro ao conectar:", err);
-    }
+    await client.connect();
+    db = client.db("copaBrawlDB"); // nome do banco
+    playersCollection = db.collection("players"); // coleção
+    console.log("Conectado ao MongoDB");
 }
-connectDB();
 
-// === Endpoints ===
+connectDB().catch(console.error);
 
-// Salvar inscrição
-app.post("/inscricao", async (req, res) => {
-    try {
-        const { nome, idade, brawler } = req.body;
-        const collection = db.collection("inscricoes");
-        await collection.insertOne({
-            nome,
-            idade,
-            brawler,
-            data: new Date() // adicionando a data automaticamente
-        });
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
+// Rota principal (index.html)
+const path = require("path");
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Listar todas as inscrições
-app.get("/inscricoes", async (req, res) => {
-    try {
-        const collection = db.collection("inscricoes");
-        const inscricoes = await collection.find().toArray();
-        res.json(inscricoes);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// Adicionar player
+app.post("/add", async (req, res) => {
+    let { nick, id } = req.body;
+
+    if (!nick || !id) return res.status(400).send("Dados inválidos");
+    if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
+
+    const total = await playersCollection.countDocuments();
+    if (total >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
+
+    const existe = await playersCollection.findOne({ id });
+    if (existe) return res.status(400).send("Esse ID já foi registrado");
+
+    await playersCollection.insertOne({ nick, id });
+    res.send("ok");
 });
 
-// Servir arquivos do front-end
-app.use(express.static("public"));
+// Listar players
+app.get("/list", async (req, res) => {
+    const players = await playersCollection.find({}).toArray();
+    res.json(players);
+});
 
-// Rodar o servidor
+// Deletar player pelo ID
+app.post("/delete", async (req, res) => {
+    const { id } = req.body;
+    const result = await playersCollection.deleteOne({ id });
+
+    if (result.deletedCount === 0) return res.status(400).send("ID inválido");
+    res.send("deleted");
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+app.listen(PORT, () => console.log("Server rodando na porta " + PORT));
