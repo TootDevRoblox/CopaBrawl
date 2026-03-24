@@ -2,14 +2,22 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copa Brawl</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Copa Brawl</h1>
-    <input type="text" id="nick" placeholder="Nick">
-    <input type="text" id="id" placeholder="ID">
-    <button onclick="enviar()">Entrar</button>
-    <ul id="lista"></ul>
+    <div class="container">
+        <h1>Copa Brawl</h1>
+        
+        <div class="form-container">
+            <input type="text" id="nick" placeholder="Digite seu nick">
+            <input type="text" id="id" placeholder="Digite seu ID">
+            <button onclick="enviar()">Entrar</button>
+        </div>
+
+        <ul id="lista"></ul>
+    </div>
 
     <script src="script.js"></script>
 </body>
