@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Configuração Supabase
 const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
-const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço (backend)
+const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço do backend
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 // Rota principal
@@ -28,13 +28,14 @@ app.post("/add", async (req, res) => {
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
     try {
-        // Checa se já existe
+        // Verifica se já existe
         const { data: existe, error: findError } = await supabase
-            .from("nick")          // nome da tabela
+            .from("nick")        // nome da tabela
             .select("*")
             .eq("id", id)
             .single();
-        if (findError && findError.code !== "PGRST116") throw findError; // ignora não encontrado
+
+        if (findError && findError.code !== "PGRST116") throw findError; // ignora "não encontrado"
         if (existe) return res.status(400).send("ID já registrado");
 
         // Insere novo jogador
@@ -69,6 +70,7 @@ app.post("/delete", async (req, res) => {
     try {
         const { error } = await supabase.from("nick").delete().eq("id", id);
         if (error) throw error;
+
         console.log("Jogador deletado:", id);
         res.send("deleted");
     } catch (err) {
