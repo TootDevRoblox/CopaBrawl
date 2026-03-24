@@ -1,52 +1,69 @@
-let isAdmin = false
-https://github.com/TootDevRoblox/CopaBrawl/blob/main/public/script.js
-function enviar() {
-    let nick = document.getElementById("nick").value
-    let id = document.getElementById("id").value
+let isAdmin = false;
 
-    if (nick === "C#Lipeh777") {
-        isAdmin = true
-        alert("Você é admin!")
+function enviar() {
+    const nick = document.getElementById("nick").value.trim();
+    const id = document.getElementById("id").value.trim();
+
+    if (!nick || !id) {
+        alert("Preencha os dois campos!");
+        return;
     }
 
-    fetch("/add", {
+    if (nick === "C#Lipeh777") {
+        isAdmin = true;
+        alert("Você é admin!");
+    }
+
+    fetch("https://copabrawl.onrender.com/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nick, id })
     })
     .then(res => res.text())
-    .then(() => carregar())
+    .then(data => {
+        if (data !== "ok") alert("Erro: " + data);
+        carregar();
+    })
+    .catch(err => {
+        console.error("Erro ao enviar:", err);
+        alert("Não foi possível enviar os dados");
+    });
 }
 
 function carregar() {
-    fetch("/list")
+    fetch("https://copabrawl.onrender.com/list")
     .then(res => res.json())
     .then(data => {
-        let lista = document.getElementById("lista")
-        lista.innerHTML = ""
+        const lista = document.getElementById("lista");
+        lista.innerHTML = "";
+
         data.forEach((player, index) => {
-            let li = document.createElement("li")
-            li.innerText = player.nick + " - " + player.id
+            const li = document.createElement("li");
+            li.innerText = player.nick + " - " + player.id;
 
             if (isAdmin) {
-                let btn = document.createElement("button")
-                btn.innerText = "Deletar"
-                btn.onclick = () => deletar(index)
-                li.appendChild(btn)
+                const btn = document.createElement("button");
+                btn.innerText = "Deletar";
+                btn.onclick = () => deletar(index);
+                li.appendChild(btn);
             }
 
-            lista.appendChild(li)
-        })
+            lista.appendChild(li);
+        });
     })
+    .catch(err => console.error("Erro ao carregar lista:", err));
 }
 
 function deletar(index) {
-    fetch("/delete", {
+    fetch("https://copabrawl.onrender.com/delete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index })
     })
+    .then(res => res.text())
     .then(() => carregar())
+    .catch(err => console.error("Erro ao deletar:", err));
 }
 
-carregar()
+// Carrega a lista ao abrir a página
+carregar();
