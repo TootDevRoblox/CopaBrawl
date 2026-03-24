@@ -1,64 +1,72 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 const MAX_PLAYERS = 64;
+const DATA_FILE = path.join(__dirname, "database.json");
 
-// Substitua pela sua string do MongoDB
-const MONGO_URI = "mongodb+srv://coconut4691_db_user:QZgqfGDuzdXTrTT6@data.nucbyqx.mongodb.net/";
-const client = new MongoClient(MONGO_URI);
-
-let db, playersCollection;
-
-// Conectar ao MongoDB
-async function connectDB() {
-    await client.connect();
-    db = client.db("copaBrawlDB"); // nome do banco
-    playersCollection = db.collection("players"); // coleção
-    console.log("Conectado ao MongoDB");
+// Função pra ler o JSON
+function lerDatabase() {
+    if (!fs.existsSync(DATA_FILE)) return [];
+    const data = fs.readFileSync(DATA_FILE);
+    try {
+        return JSON.parse(data);
+    } catch (err) {
+        console.error("Erro ao ler database.json:", err);
+        return [];
+    }
 }
 
-connectDB().catch(console.error);
+// Função pra salvar no JSON
+function salvarDatabase(players) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(players, null, 2));
+}
 
 // Rota principal (index.html)
-const path = require("path");
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Adicionar player
-app.post("/add", async (req, res) => {
+app.post("/add", (req, res) => {
     let { nick, id } = req.body;
 
     if (!nick || !id) return res.status(400).send("Dados inválidos");
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
-    const total = await playersCollection.countDocuments();
-    if (total >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
+    const players = lerDatabase();
 
-    const existe = await playersCollection.findOne({ id });
-    if (existe) return res.status(400).send("Esse ID já foi registrado");
+    if (players.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
+    if (players.find(p => p.id === id)) return res.status(400).send("Esse ID já foi registrado");
 
-    await playersCollection.insertOne({ nick, id });
+    players.push({ nick, id });
+    salvarDatabase(players);
+
     res.send("ok");
 });
 
 // Listar players
-app.get("/list", async (req, res) => {
-    const players = await playersCollection.find({}).toArray();
+app.get("/list", (req, res) => {
+    const players = lerDatabase();
     res.json(players);
 });
 
 // Deletar player pelo ID
-app.post("/delete", async (req, res) => {
+app.post("/delete", (req, res) => {
     const { id } = req.body;
-    const result = await playersCollection.deleteOne({ id });
+    let players = lerDatabase();
 
-    if (result.deletedCount === 0) return res.status(400).send("ID inválido");
+    const lengthAntes = players.length;
+    players = players.filter(p => p.id !== id);
+
+    if (players.length === lengthAntes) return res.status(400).send("ID inválido");
+
+    salvarDatabase(players);
     res.send("deleted");
 });
 
