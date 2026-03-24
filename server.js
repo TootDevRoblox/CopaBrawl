@@ -1,84 +1,79 @@
 const express = require("express");
-const fs = require("fs");
 const cors = require("cors");
+const { MongoClient, ObjectId } = require("mongodb");
 const path = require("path");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-// ⚡ Serve a pasta public
 app.use(express.static(path.join(__dirname, "public")));
 
-// Caminho absoluto para o arquivo de database
-const DB_FILE = path.join(__dirname, "database.json");
-const MAX_PLAYERS = 64;
+const PORT = process.env.PORT || 3000;
 
-// Função para ler o database
-function readDB() {
-    if (!fs.existsSync(DB_FILE)) fs.writeFileSync(DB_FILE, "[]");
-    try {
-        const data = fs.readFileSync(DB_FILE, "utf8");
-        return JSON.parse(data);
-    } catch (e) {
-        console.error("Erro ao ler database.json:", e);
-        return [];
-    }
-}
+// MongoDB Atlas
+const MONGO_URI = "mongodb+srv://coconut4691_db_user:QZgqfGDuzdXTrTT6@data.nucbyqx.mongodb.net/brawl_inscricao?retryWrites=true&w=majority";
+const DB_NAME = "brawl_inscricao";
+let db;
 
-// Função para escrever no database
-function writeDB(data) {
-    try {
-        fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
-        console.log("Database atualizado:", data);
-    } catch (e) {
-        console.error("Erro ao escrever database.json:", e);
-    }
-}
+// Conecta no MongoDB
+MongoClient.connect(MONGO_URI)
+  .then(client => {
+      db = client.db(DB_NAME);
+      console.log("Conectado ao MongoDB Atlas!");
+  })
+  .catch(err => console.error("Erro ao conectar no MongoDB:", err));
 
-// rota principal
+// Rota principal
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// adicionar player
-app.post("/add", (req, res) => {
+// Adicionar jogador
+app.post("/add", async (req, res) => {
     const { nick, id } = req.body;
     if (!nick || !id) return res.status(400).send("Dados inválidos");
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
-    let db = readDB();
-    if (db.length >= MAX_PLAYERS) return res.status(400).send("Limite de 64 jogadores atingido");
+    try {
+        const existe = await db.collection("players").findOne({ id });
+        if (existe) return res.status(400).send("ID já registrado");
 
-    const existe = db.find(p => p.id === id);
-    if (existe) return res.status(400).send("Esse ID já foi registrado");
-
-    db.push({ nick, id });
-    writeDB(db);
-
-    console.log(`Novo jogador adicionado: ${nick} (${id})`);
-    res.send("ok");
+        await db.collection("players").insertOne({ nick, id });
+        console.log("Novo jogador adicionado:", { nick, id });
+        res.send("ok");
+    } catch (err) {
+        console.error("Erro ao adicionar jogador:", err);
+        res.status(500).send("Erro no servidor");
+    }
 });
 
-// listar players
-app.get("/list", (req, res) => {
-    res.json(readDB());
+// Listar jogadores
+app.get("/list", async (req, res) => {
+    try {
+        const players = await db.collection("players").find().toArray();
+        res.json(players);
+    } catch (err) {
+        console.error("Erro ao listar jogadores:", err);
+        res.status(500).send("Erro no servidor");
+    }
 });
 
-// deletar player
-app.post("/delete", (req, res) => {
+// Deletar jogador
+app.post("/delete", async (req, res) => {
     const { index } = req.body;
-    let db = readDB();
 
-    if (index < 0 || index >= db.length) return res.status(400).send("Índice inválido");
+    try {
+        const players = await db.collection("players").find().toArray();
+        if (index < 0 || index >= players.length) return res.status(400).send("Índice inválido");
 
-    const removido = db.splice(index, 1);
-    writeDB(db);
-
-    console.log(`Jogador deletado:`, removido[0]);
-    res.send("deleted");
+        await db.collection("players").deleteOne({ _id: ObjectId(players[index]._id) });
+        console.log("Jogador deletado:", players[index]);
+        res.send("deleted");
+    } catch (err) {
+        console.error("Erro ao deletar jogador:", err);
+        res.status(500).send("Erro no servidor");
+    }
 });
 
-// Porta do servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Servidor da Copa Brawl está online! Porta:", PORT));
+// Inicia servidor
+app.listen(PORT, () => console.log("Servidor da Copa Brawl online na porta", PORT));
