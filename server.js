@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Configuração Supabase
 const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
-const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço (não usar anon key no server)
+const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço (backend)
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 // Rota principal
@@ -23,21 +23,25 @@ app.get("/", (req, res) => {
 // Adicionar jogador
 app.post("/add", async (req, res) => {
     const { nick, id } = req.body;
+
     if (!nick || !id) return res.status(400).send("Dados inválidos");
     if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
 
     try {
+        // Checa se já existe
         const { data: existe, error: findError } = await supabase
-            .from("players")
+            .from("nick")          // nome da tabela
             .select("*")
             .eq("id", id)
             .single();
         if (findError && findError.code !== "PGRST116") throw findError; // ignora não encontrado
         if (existe) return res.status(400).send("ID já registrado");
 
-        const { error } = await supabase.from("players").insert([{ nick, id }]);
+        // Insere novo jogador
+        const { error } = await supabase.from("nick").insert([{ nick, id }]);
         if (error) throw error;
 
+        console.log("Novo jogador adicionado:", { nick, id });
         res.send("ok");
     } catch (err) {
         console.error("Erro ao adicionar jogador:", err);
@@ -48,7 +52,7 @@ app.post("/add", async (req, res) => {
 // Listar jogadores
 app.get("/list", async (req, res) => {
     try {
-        const { data, error } = await supabase.from("players").select("*");
+        const { data, error } = await supabase.from("nick").select("*");
         if (error) throw error;
         res.json(data);
     } catch (err) {
@@ -63,8 +67,9 @@ app.post("/delete", async (req, res) => {
     if (!id) return res.status(400).send("ID inválido");
 
     try {
-        const { error } = await supabase.from("players").delete().eq("id", id);
+        const { error } = await supabase.from("nick").delete().eq("id", id);
         if (error) throw error;
+        console.log("Jogador deletado:", id);
         res.send("deleted");
     } catch (err) {
         console.error("Erro ao deletar jogador:", err);
