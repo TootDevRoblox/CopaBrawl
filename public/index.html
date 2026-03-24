@@ -1,73 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
     <title>Copa Brawl</title>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            background: linear-gradient(180deg, #000000, #001a33);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .box {
-            text-align: center;
-            background: rgba(0,0,0,0.5);
-            padding: 30px;
-            border-radius: 10px;
-            width: 300px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px;
-            width: 100%;
-            margin-top: 10px;
-            background: #0077ff;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        ul {
-            margin-top: 20px;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        li {
-            margin-bottom: 5px;
-        }
-    </style>
 </head>
-
 <body>
-
-<div class="box">
     <h1>Copa Brawl</h1>
-
-    <input id="nick" placeholder="Seu nick">
-    <input id="id" placeholder="ID do Brawl">
-
+    <input type="text" id="nick" placeholder="Nick">
+    <input type="text" id="id" placeholder="ID">
     <button onclick="enviar()">Entrar</button>
-
     <ul id="lista"></ul>
-</div>
 
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
