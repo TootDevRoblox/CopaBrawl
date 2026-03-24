@@ -1,123 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copa Brawl</title>
-    <style>
-        /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa Brawl</title>
+<style>
+/* Reset e fonte estilosa */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
 
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* degradê azul escuro */
-            color: #fff;
-        }
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+}
 
-        .container {
-            text-align: center;
-            background-color: rgba(0,0,0,0.5); /* fundo semi-transparente */
-            padding: 40px 50px;
-            border-radius: 15px;
-            width: 350px;
-        }
+/* Container “flutuante” */
+.container {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px 50px;
+    border-radius: 20px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
 
-        h1 {
-            margin-bottom: 25px;
-            font-size: 28px;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
+/* Título */
+h1 {
+    font-size: 30px;
+    margin-bottom: 25px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #74ebd5;
+}
 
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
+/* Formulário */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            font-size: 15px;
-        }
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    transition: 0.2s;
+}
 
-        input[type="text"]:focus {
-            box-shadow: 0 0 8px #74ebd5;
-        }
+input[type="text"]:focus {
+    box-shadow: 0 0 8px #74ebd5;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            background-color: #74ebd5;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+/* Botão estilizado */
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #74ebd5, #67d2c6);
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        button:hover {
-            background-color: #67d2c6;
-        }
+button:hover {
+    background: linear-gradient(90deg, #67d2c6, #5bb0a9);
+}
 
-        ul {
-            list-style: none;
-            margin-top: 20px;
-            max-height: 220px;
-            overflow-y: auto;
-            padding-left: 0;
-        }
+/* Lista de jogadores */
+ul {
+    list-style: none;
+    margin-top: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-left: 0;
+}
 
-        ul li {
-            padding: 8px 12px;
-            margin-bottom: 8px;
-            background-color: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+ul li {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background-color: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
 
-        ul li button {
-            background-color: #ff6b6b;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+ul li:hover {
+    background-color: rgba(255,255,255,0.25);
+}
 
-        ul li button:hover {
-            background-color: #ff4c4c;
-        }
-    </style>
+/* Botão de deletar */
+ul li button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+ul li button:hover {
+    background-color: #ff4c4c;
+}
+
+/* Diferenciar admins na lista */
+.admin {
+    font-weight: bold;
+    color: #ffdf5d;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Copa Brawl</h1>
+<div class="container">
+    <h1>Copa Brawl</h1>
 
-        <div class="form-container">
-            <input type="text" id="nick" placeholder="Digite seu nick">
-            <input type="text" id="id" placeholder="Digite seu ID">
-            <button onclick="enviar()">Entrar</button>
-        </div>
-
-        <ul id="lista"></ul>
+    <div class="form-container">
+        <input type="text" id="nick" placeholder="Digite seu nick">
+        <input type="text" id="id" placeholder="Digite seu ID">
+        <button onclick="enviar()">Entrar</button>
     </div>
 
-    <script src="script.js"></script>
+    <ul id="lista"></ul>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
