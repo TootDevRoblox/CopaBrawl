@@ -15,10 +15,7 @@ function enviar() {
         alert("Você é admin!");
     }
 
-    // Substitua pelo URL do seu servidor no Render, se estiver online
-    const url = "/add"; // ou "https://seu-app.onrender.com/add"
-
-    fetch(url, {
+    fetch("https://copabrawl.onrender.com/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nick, id })
@@ -39,8 +36,7 @@ function enviar() {
 
 // Função para carregar a lista de jogadores
 function carregar() {
-    const url = "/list"; // ou "https://seu-app.onrender.com/list"
-    fetch(url)
+    fetch("https://copabrawl.onrender.com/list")
     .then(res => res.json())
     .then(data => {
         const lista = document.getElementById("lista");
@@ -67,8 +63,7 @@ function carregar() {
 
 // Função para deletar um jogador (apenas admin)
 function deletar(index) {
-    const url = "/delete"; // ou "https://seu-app.onrender.com/delete"
-    fetch(url, {
+    fetch("https://copabrawl.onrender.com/delete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index })
