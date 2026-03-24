@@ -1,49 +1,29 @@
 let isAdmin = false
-
-const API = "https://copabrawl.onrender.com"
-
+https://github.com/TootDevRoblox/CopaBrawl/blob/main/public/script.js
 function enviar() {
     let nick = document.getElementById("nick").value
     let id = document.getElementById("id").value
-
-    if (!nick || !id) {
-        alert("Preenche tudo")
-        return
-    }
 
     if (nick === "C#Lipeh777") {
         isAdmin = true
         alert("Você é admin!")
     }
 
-    fetch(API + "/add", {
+    fetch("/add", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nick, id })
     })
-    .then(res => {
-        if (!res.ok) {
-            return res.text().then(msg => { throw new Error(msg) })
-        }
-        return res.text()
-    })
-    .then(() => {
-        carregar()
-    })
-    .catch(err => {
-        alert(err.message)
-    })
+    .then(res => res.text())
+    .then(() => carregar())
 }
 
 function carregar() {
-    fetch(API + "/list")
+    fetch("/list")
     .then(res => res.json())
     .then(data => {
         let lista = document.getElementById("lista")
         lista.innerHTML = ""
-
         data.forEach((player, index) => {
             let li = document.createElement("li")
             li.innerText = player.nick + " - " + player.id
@@ -61,11 +41,9 @@ function carregar() {
 }
 
 function deletar(index) {
-    fetch(API + "/delete", {
+    fetch("/delete", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index })
     })
     .then(() => carregar())
