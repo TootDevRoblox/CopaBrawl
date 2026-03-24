@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Configuração Supabase
 const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
-const SUPABASE_SERVICE_KEY = "sb_publishable_xzCoWHKHIYUZRjjyfxp1gg_KKbyl5p1"; // chave de serviço do backend
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 // Rota principal
