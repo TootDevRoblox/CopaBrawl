@@ -16,54 +16,48 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle at 30% 30%, #00bfff, #0f2027 60%);
+    background: #0f2027;
     color: #fff;
     overflow: hidden;
     position: relative;
 }
 
-/* camada animada tipo líquido */
-body::before {
+/* bordas líquidas */
+body::before,
+body::after {
     content: "";
     position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0,191,255,0.4), transparent 60%);
-    animation: liquidMove 10s infinite linear;
+    width: 120%;
+    height: 120%;
+    border-radius: 40%;
+    background: radial-gradient(circle, rgba(0,191,255,0.6), transparent 70%);
     filter: blur(80px);
+    animation: wave 12s infinite linear;
 }
 
-/* animação fluida */
-@keyframes liquidMove {
-    0% {
-        transform: translate(-25%, -25%) scale(1);
-    }
-    50% {
-        transform: translate(-10%, -30%) scale(1.2);
-    }
-    100% {
-        transform: translate(-25%, -25%) scale(1);
-    }
-}
-    body::after {
-    content: "";
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    background: radial-gradient(circle, rgba(0,191,255,0.2), transparent 70%);
-    animation: liquidMove2 14s infinite linear;
-    filter: blur(100px);
+/* esquerda */
+body::before {
+    top: -30%;
+    left: -40%;
 }
 
-@keyframes liquidMove2 {
+/* direita */
+body::after {
+    bottom: -30%;
+    right: -40%;
+    animation-duration: 16s;
+}
+
+/* movimento tipo água */
+@keyframes wave {
     0% {
-        transform: translate(-30%, -20%) scale(1);
+        transform: rotate(0deg) scale(1);
     }
     50% {
-        transform: translate(-20%, -40%) scale(1.3);
+        transform: rotate(180deg) scale(1.2);
     }
     100% {
-        transform: translate(-30%, -20%) scale(1);
+        transform: rotate(360deg) scale(1);
     }
 }
 
