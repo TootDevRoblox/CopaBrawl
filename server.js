@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+
 // Adicionar jogador
 app.post("/add", async (req, res) => {
     const { nick, id } = req.body;
@@ -81,5 +82,17 @@ app.post("/delete", async (req, res) => {
     }
 });
 
+app.get("/teste", async (req, res) => {
+    const { data, error } = await supabase
+        .from("nick")
+        .insert([{ nick: "teste", id: "999" }]);
+
+    if (error) {
+        console.error("ERRO:", error);
+        return res.send("erro: " + error.message);
+    }
+
+    res.send("salvou");
+});
 // Inicia servidor
 app.listen(PORT, () => console.log("Servidor da Copa Brawl online na porta", PORT));
