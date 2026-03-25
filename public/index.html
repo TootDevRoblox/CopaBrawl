@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Copa Brawl</title>
 <style>
-/* Reset e fonte estilosa */
 * {
     margin: 0;
     padding: 0;
@@ -22,7 +21,6 @@ body {
     color: #fff;
 }
 
-/* Container “flutuante” */
 .container {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 40px 50px;
@@ -32,7 +30,6 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
-/* Título */
 h1 {
     font-size: 30px;
     margin-bottom: 25px;
@@ -41,7 +38,6 @@ h1 {
     color: #74ebd5;
 }
 
-/* Formulário */
 .form-container {
     display: flex;
     flex-direction: column;
@@ -63,7 +59,20 @@ input[type="text"]:focus {
     box-shadow: 0 0 8px #74ebd5;
 }
 
-/* Botão estilizado */
+.id-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contador {
+    font-size: 12px;
+    color: #ffffff;
+    text-shadow: 0 0 5px #00bfff, 0 0 10px #00bfff;
+    min-width: 45px;
+    text-align: right;
+}
+
 button {
     width: 100%;
     padding: 12px;
@@ -80,7 +89,6 @@ button:hover {
     background: linear-gradient(90deg, #67d2c6, #5bb0a9);
 }
 
-/* Lista de jogadores */
 ul {
     list-style: none;
     margin-top: 20px;
@@ -104,7 +112,6 @@ ul li:hover {
     background-color: rgba(255,255,255,0.25);
 }
 
-/* Botão de deletar */
 ul li button {
     background-color: #ff6b6b;
     color: #fff;
@@ -118,12 +125,6 @@ ul li button {
 ul li button:hover {
     background-color: #ff4c4c;
 }
-
-/* Diferenciar admins na lista */
-.admin {
-    font-weight: bold;
-    color: #ffdf5d;
-}
 </style>
 </head>
 <body>
@@ -132,7 +133,12 @@ ul li button:hover {
 
     <div class="form-container">
         <input type="text" id="nick" placeholder="Digite seu nick">
-        <input type="text" id="id" placeholder="Digite seu ID">
+
+        <div class="id-row">
+            <input type="text" id="id" placeholder="Digite seu ID">
+            <span id="contador" class="contador">0/64</span>
+        </div>
+
         <button onclick="enviar()">Entrar</button>
     </div>
 
