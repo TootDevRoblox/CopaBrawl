@@ -39,6 +39,11 @@ function enviar() {
 // 📋 CARREGAR LISTA
 function carregar() {
     fetch("https://copabrawl.onrender.com/list")
+
+        const contador = document.getElementById("contador");
+const max = 64;
+contador.innerText = `${data.length}/${max}`;
+    
     .then(res => res.json())
     .then(data => {
         const lista = document.getElementById("lista");
