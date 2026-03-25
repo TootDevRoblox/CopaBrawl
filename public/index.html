@@ -69,6 +69,77 @@ body::after {
         transform: rotate(360deg) scale(1);
     }
 }
+    .parallax {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* base de todas as camadas */
+.layer {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: url("https://cdn.discordapp.com/attachments/1385761618796740740/1486384850553409566/167_Sem_Titulo_20260325112201.png");
+    
+    /* repete a textura */
+    background-repeat: repeat;
+
+    /* tamanho pequeno = efeito textura */
+    background-size: 60px;
+
+    opacity: 0.05; /* controla intensidade */
+}
+
+/* camada mais lenta (fundo) */
+.layer1 {
+    animation: move1 60s linear infinite;
+}
+
+/* camada média */
+.layer2 {
+    animation: move2 40s linear infinite;
+    opacity: 0.08;
+}
+
+/* camada rápida (frente) */
+.layer3 {
+    animation: move3 25s linear infinite;
+    opacity: 0.12;
+}
+
+/* movimento diagonal ~348° */
+@keyframes move1 {
+    from {
+        transform: translate(0, 0) rotate(348deg);
+    }
+    to {
+        transform: translate(200px, -400px) rotate(348deg);
+    }
+}
+
+@keyframes move2 {
+    from {
+        transform: translate(0, 0) rotate(348deg);
+    }
+    to {
+        transform: translate(300px, -600px) rotate(348deg);
+    }
+}
+
+@keyframes move3 {
+    from {
+        transform: translate(0, 0) rotate(348deg);
+    }
+    to {
+        transform: translate(500px, -900px) rotate(348deg);
+    }
+}
 
 .container {
     background-color: rgba(0, 0, 0, 0.6);
