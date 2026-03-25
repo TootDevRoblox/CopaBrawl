@@ -39,21 +39,20 @@ function enviar() {
 // 📋 CARREGAR LISTA
 function carregar() {
     fetch("https://copabrawl.onrender.com/list")
-
-        const contador = document.getElementById("contador");
-const max = 64;
-contador.innerText = `${data.length}/${max}`;
-    
     .then(res => res.json())
     .then(data => {
+
         const lista = document.getElementById("lista");
         lista.innerHTML = "";
+
+        const contador = document.getElementById("contador");
+        const max = 64;
+        contador.innerText = `${data.length}/${max}`;
 
         data.forEach((player) => {
             const li = document.createElement("li");
             li.innerText = player.nick + " - " + player.id;
 
-            // botão deletar só pra admin
             if (isAdmin) {
                 const btn = document.createElement("button");
                 btn.innerText = "Deletar";
