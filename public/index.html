@@ -9,64 +9,59 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', 'Segoe UI', sans-serif;
-}
+    font-family: 'Poppins', 'Segoe UI'/* Fundo preto com efeito líquido */
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0f2027;
-    color: #fff;
+    background: #000; /* fundo preto */
     overflow: hidden;
     position: relative;
 }
 
-/* garante que o conteúdo fique na frente */
-.container {
-    position: relative;
-    z-index: 2;
-}
-
-/* camada líquida no fundo */
+/* Bolhas neon */
 body::before,
 body::after {
     content: "";
     position: absolute;
-    width: 140%;
-    height: 140%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,240,255,0.25), transparent 70%);
-    filter: blur(100px);
+    width: 20px;  /* bem menor */
+    height: 20px; /* bem menor */
+    background: #74ebd5; /* mesma cor do glow */
+    box-shadow: 0 0 15px #74ebd5, 0 0 30px #74ebd5, 0 0 60px #74ebd5;
     z-index: 0;
     pointer-events: none;
-    animation: wave 14s infinite ease-in-out;
+    animation: floatBubble 12s infinite ease-in-out;
+    opacity: 0.7;
 }
 
-/* lado esquerdo */
+/* Posição inicial das bolhas */
 body::before {
-    top: -40%;
-    left: -50%;
+    top: 10%;
+    left: 15%;
 }
 
-/* lado direito */
 body::after {
-    bottom: -40%;
-    right: -50%;
-    animation-duration: 18s;
+    bottom: 15%;
+    right: 10%;
+    animation-duration: 16s;
 }
 
-/* movimento suave tipo água */
-@keyframes wave {
+/* Movimento flutuante tipo líquido */
+@keyframes floatBubble {
     0% {
-        transform: rotate(0deg) scale(1);
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(30px, -20px) scale(1.1);
     }
     50% {
-        transform: rotate(180deg) scale(1.15);
+        transform: translate(-20px, 30px) scale(0.9);
+    }
+    75% {
+        transform: translate(20px, -10px) scale(1.05);
     }
     100% {
-        transform: rotate(360deg) scale(1);
+        transform: translate(0, 0) scale(1);
     }
+}, sans-serif;
 }
 
 .container {
