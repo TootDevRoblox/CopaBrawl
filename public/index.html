@@ -9,59 +9,64 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', 'Segoe UI'/* Fundo preto com efeito líquido */
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
 body {
-    background: #000; /* fundo preto */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f2027;
+    color: #fff;
     overflow: hidden;
     position: relative;
 }
 
-/* Bolhas neon */
+/* garante que o conteúdo fique na frente */
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* camada líquida no fundo */
 body::before,
 body::after {
     content: "";
     position: absolute;
+    width: 110%;
+    height: 110%;
     border-radius: 50%;
-    width: 20px;  /* bem menor */
-    height: 20px; /* bem menor */
-    background: #74ebd5; /* mesma cor do glow */
-    box-shadow: 0 0 15px #74ebd5, 0 0 30px #74ebd5, 0 0 60px #74ebd5;
+    background: radial-gradient(circle, rgba(200,240,255,0.25), transparent 70%);
+    filter: blur(100px);
     z-index: 0;
     pointer-events: none;
-    animation: floatBubble 12s infinite ease-in-out;
-    opacity: 0.7;
+    animation: wave 14s infinite ease-in-out;
 }
 
-/* Posição inicial das bolhas */
+/* lado esquerdo */
 body::before {
-    top: 10%;
-    left: 15%;
+    top: -40%;
+    left: -50%;
 }
 
+/* lado direito */
 body::after {
-    bottom: 15%;
-    right: 10%;
-    animation-duration: 16s;
+    bottom: -40%;
+    right: -50%;
+    animation-duration: 18s;
 }
 
-/* Movimento flutuante tipo líquido */
-@keyframes floatBubble {
+/* movimento suave tipo água */
+@keyframes wave {
     0% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(30px, -20px) scale(1.1);
+        transform: rotate(0deg) scale(0.4);
     }
     50% {
-        transform: translate(-20px, 30px) scale(0.9);
-    }
-    75% {
-        transform: translate(20px, -10px) scale(1.05);
+        transform: rotate(180deg) scale(1.15);
     }
     100% {
-        transform: translate(0, 0) scale(1);
+        transform: rotate(360deg) scale(0.4);
     }
-}, sans-serif;
 }
 
 .container {
@@ -107,6 +112,90 @@ input[type="text"]:focus {
     align-items: center;
     gap: 10px;
 }
+
+.contador {
+    font-size: 12px;
+    color: #ffffff;
+    text-shadow: 0 0 5px #00bfff, 0 0 10px #00bfff;
+    min-width: 45px;
+    text-align: right;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #74ebd5, #67d2c6);
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #67d2c6, #5bb0a9);
+}
+
+ul {
+    list-style: none;
+    margin-top: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+ul li {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background-color: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+ul li:hover {
+    background-color: rgba(255,255,255,0.25);
+}
+
+ul li button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+ul li button:hover {
+    background-color: #ff4c4c;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Copa Brawl</h1>
+
+    <div class="form-container">
+        <input type="text" id="nick" placeholder="Digite seu nick">
+
+        <div class="id-row">
+            <input type="text" id="id" placeholder="Digite seu ID">
+            <span id="contador" class="contador">0/64</span>
+        </div>
+
+        <button onclick="enviar()">Entrar</button>
+    </div>
+
+    <ul id="lista"></ul>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
 
 .contador {
     font-size: 12px;
