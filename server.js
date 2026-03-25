@@ -12,10 +12,8 @@ const PORT = process.env.PORT || 3000;
 
 // 🔹 Configuração Supabase
 const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_KEY;
+const SUPABASE_SERVICE_KEY = ;
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-
-console.log("KEY:", process.env.SUPABASE_KEY);
 
 // Rota principal
 app.get("/", (req, res) => {
