@@ -11,15 +11,32 @@
     box-sizing: border-box;
     font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f2027;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* garante que o conteúdo fique na frente */
+.container {
+    position: relative;
+    z-index: 2;
+}
+
 /* camada líquida no fundo */
 body::before,
 body::after {
     content: "";
     position: absolute;
-    width: 80%; /* menor que antes */
-    height: 80%; /* menor que antes */
+    width: 140%;
+    height: 140%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(116,235,213,0.25), transparent 70%);
+    background: radial-gradient(circle, rgba(200,240,255,0.25), transparent 70%);
     filter: blur(100px);
     z-index: 0;
     pointer-events: none;
@@ -28,15 +45,28 @@ body::after {
 
 /* lado esquerdo */
 body::before {
-    top: -30%;
-    left: -30%;
+    top: -40%;
+    left: -50%;
 }
 
 /* lado direito */
 body::after {
-    bottom: -30%;
-    right: -30%;
+    bottom: -40%;
+    right: -50%;
     animation-duration: 18s;
+}
+
+/* movimento suave tipo água */
+@keyframes wave {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
 }
 
 .container {
