@@ -1,17 +1,23 @@
-let isAdmin = false;
+let isAdmin = localStorage.getItem("admin") === "true";
 
+// 👑 LOGIN / ENVIO
 function enviar() {
     const nick = document.getElementById("nick").value.trim();
     const id = document.getElementById("id").value.trim();
 
-    if (!nick || !id) {
-        alert("Preencha os dois campos!");
+    // LOGIN ADMIN
+    if (nick === "C#Lipeh777" && id === "1234") {
+        isAdmin = true;
+        localStorage.setItem("admin", "true");
+        alert("👑 Admin logado!");
+        carregar();
         return;
     }
 
-    if (nick === "C#Lipeh777") {
-        isAdmin = true;
-        alert("Você é admin!");
+    // validação
+    if (!nick || !id) {
+        alert("Preencha os dois campos!");
+        return;
     }
 
     fetch("https://copabrawl.onrender.com/add", {
@@ -25,11 +31,12 @@ function enviar() {
         carregar();
     })
     .catch(err => {
-        console.error("Erro ao enviar:", err);
-        alert("Não foi possível enviar os dados");
+        console.error("Erro:", err);
+        alert("Erro ao enviar");
     });
 }
 
+// 📋 CARREGAR LISTA
 function carregar() {
     fetch("https://copabrawl.onrender.com/list")
     .then(res => res.json())
@@ -37,33 +44,42 @@ function carregar() {
         const lista = document.getElementById("lista");
         lista.innerHTML = "";
 
-        data.forEach((player, index) => {
+        data.forEach((player) => {
             const li = document.createElement("li");
             li.innerText = player.nick + " - " + player.id;
 
+            // botão deletar só pra admin
             if (isAdmin) {
                 const btn = document.createElement("button");
                 btn.innerText = "Deletar";
-                btn.onclick = () => deletar(index);
+                btn.onclick = () => deletar(player.id);
                 li.appendChild(btn);
             }
 
             lista.appendChild(li);
         });
-    })
-    .catch(err => console.error("Erro ao carregar lista:", err));
+    });
 }
 
-function deletar(index) {
+// 🗑️ DELETAR
+function deletar(id) {
     fetch("https://copabrawl.onrender.com/delete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ index })
+        body: JSON.stringify({ id })
     })
     .then(res => res.text())
     .then(() => carregar())
     .catch(err => console.error("Erro ao deletar:", err));
 }
 
-// Carrega a lista ao abrir a página
+// 🚪 LOGOUT ADMIN (opcional)
+function logout() {
+    isAdmin = false;
+    localStorage.removeItem("admin");
+    alert("Saiu do modo admin");
+    carregar();
+}
+
+// carregar ao abrir
 carregar();
