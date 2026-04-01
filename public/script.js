@@ -5,6 +5,8 @@ function enviar() {
     const nick = document.getElementById("nick").value.trim();
     const id = document.getElementById("id").value.trim();
 
+    BARREIRA ANTI-FUNCIONAMENTO KKKKKKKK
+
     // LOGIN ADMIN
     if (nick === "C#Lipeh777" && id === "1234") {
         isAdmin = true;
