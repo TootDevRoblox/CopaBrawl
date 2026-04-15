@@ -16,7 +16,7 @@
 body {
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #04140c, #0b2e1a, #145c37); /* 💚 VERDE REAL */
+    background: linear-gradient(135deg, #04140c, #0b2e1a, #145c37);
 }
 
 /* 🌿 PARALLAX */
@@ -49,14 +49,29 @@ body {
     box-shadow: 0 0 40px rgba(0,255,120,0.2);
 }
 
-/* 🧱 TÍTULO */
+/* 🧱 TÍTULO BASE */
 h1 {
-    color: #00ff88;
     margin-bottom: 10px;
-    font-size: 28px;
-    text-shadow: 
-        0 0 10px #00ff88,
-        0 0 20px rgba(0,255,136,0.5);
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+/* ⚪ PARTE BRANCA */
+.title-white {
+    color: #ffffff;
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 10px #ffffff,
+        0 0 20px rgba(255,255,255,0.5);
+}
+
+/* 💚 PARTE VERDE */
+.title-green {
+    color: #00ff88;
+    text-shadow:
+        0 0 8px #00ff88,
+        0 0 16px rgba(0,255,136,0.6);
 }
 
 /* 🔢 CONTADOR */
@@ -145,7 +160,11 @@ li button {
 <div class="parallax" id="parallax"></div>
 
 <div class="container">
-    <h1>Copa Brawl</h1>
+
+    <h1>
+        <span class="title-white">Copa Brawl:</span>
+        <span class="title-green"> Season 2</span>
+    </h1>
 
     <p id="contador">0/64</p>
 
@@ -154,6 +173,7 @@ li button {
     <button onclick="enviar()">Entrar</button>
 
     <ul id="lista"></ul>
+
 </div>
 
 <script>
