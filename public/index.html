@@ -22,15 +22,14 @@ body {
 /* 🌿 PARALLAX BACKGROUND */
 .parallax {
     position: absolute;
-    width: 120%;
-    height: 120%;
-    top: -10%;
-    left: -10%;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
     background: url("ThrophyVines.png") repeat;
-    background-size: 400px;
-    opacity: 0.25;
+    background-size: 180px; /* 👈 MENOR */
+    opacity: 0.2;
     pointer-events: none;
-    transition: transform 0.1s linear;
 }
 
 /* 🧊 CONTAINER */
@@ -106,15 +105,21 @@ li {
 </div>
 
 <script>
-// 🎮 PARALLAX EFFECT
 const parallax = document.getElementById("parallax")
 
-document.addEventListener("mousemove", (e) => {
-    let x = (e.clientX / window.innerWidth - 0.5) * 30
-    let y = (e.clientY / window.innerHeight - 0.5) * 30
+let x = 0
+let y = 0
+
+function animar() {
+    x += 0.08   // 👉 velocidade horizontal
+    y -= 0.08   // 👉 sobe diagonal ↗
 
     parallax.style.transform = `translate(${x}px, ${y}px)`
-})
+
+    requestAnimationFrame(animar)
+}
+
+animar()
 </script>
 
 <script src="script.js"></script>
