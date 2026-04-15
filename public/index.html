@@ -16,68 +16,96 @@
 body {
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(135deg, #04140c, #0b2e1a, #145c37); /* 💚 VERDE REAL */
 }
 
-/* 🌿 PARALLAX BACKGROUND */
+/* 🌿 PARALLAX */
 .parallax {
     position: absolute;
     width: 220%;
     height: 220%;
     top: -60%;
     left: -60%;
-
     background: url("ThrophyVines.png") repeat;
-
-    background-size: 220px; /* 👈 tamanho da imagem */
-    background-position: 0 0;
-
-    opacity: 0.18;
+    background-size: 220px;
+    opacity: 0.15;
     pointer-events: none;
-
-    transform: rotate(-25deg); /* 🔥 deixa diagonal */
+    transform: rotate(-25deg);
 }
 
 /* 🧊 CONTAINER */
 .container {
     position: relative;
     z-index: 2;
-    width: 360px;
+    width: 370px;
     margin: auto;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
     padding: 40px;
     border-radius: 20px;
     text-align: center;
     color: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 0 40px rgba(0,255,120,0.2);
 }
 
+/* 🧱 TÍTULO */
 h1 {
-    color: #74ebd5;
-    margin-bottom: 20px;
+    color: #00ff88;
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-shadow: 
+        0 0 10px #00ff88,
+        0 0 20px rgba(0,255,136,0.5);
 }
 
+/* 🔢 CONTADOR */
+#contador {
+    color: #00ff88;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* INPUTS */
 input {
     width: 100%;
     padding: 12px;
     margin-bottom: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
     outline: none;
+    background: #0b2e1a;
+    color: #fff;
+    transition: 0.2s;
 }
 
+input::placeholder {
+    color: #88c9a1;
+}
+
+input:focus {
+    box-shadow: 0 0 12px #00ff88;
+}
+
+/* BOTÃO */
 button {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
-    background: linear-gradient(90deg, #74ebd5, #67d2c6);
+    background: linear-gradient(90deg, #00ff88, #00cc66);
+    color: #002b16;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.25s;
 }
 
+button:hover {
+    background: linear-gradient(90deg, #00cc66, #00994d);
+    transform: scale(1.03);
+}
+
+/* LISTA */
 ul {
     margin-top: 15px;
     list-style: none;
@@ -85,13 +113,29 @@ ul {
     overflow-y: auto;
 }
 
+/* PLAYERS */
 li {
-    background: rgba(255,255,255,0.15);
+    background: rgba(0,255,136,0.08);
     padding: 8px;
     border-radius: 8px;
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
+    transition: 0.2s;
+}
+
+li:hover {
+    background: rgba(0,255,136,0.2);
+}
+
+/* BOTÃO DELETE */
+li button {
+    background: #00ff88;
+    color: #002b16;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -102,6 +146,8 @@ li {
 
 <div class="container">
     <h1>Copa Brawl</h1>
+
+    <p id="contador">0/64</p>
 
     <input type="text" id="nick" placeholder="Nick">
     <input type="text" id="id" placeholder="ID">
@@ -117,11 +163,10 @@ let x = 0
 let y = 0
 
 function animar() {
-    x += 0.4   // 👉 BEM MAIS RÁPIDO
-    y -= 0.4   // 👉 diagonal ↗
+    x += 0.4
+    y -= 0.4
 
     parallax.style.transform = `translate(${x}px, ${y}px) rotate(-25deg)`
-
     requestAnimationFrame(animar)
 }
 
