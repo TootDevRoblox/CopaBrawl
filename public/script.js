@@ -24,10 +24,10 @@ function enviar() {
         },
         body: JSON.stringify({ nick, id })
     })
-    .then(res => res.text())
-    .then(msg => {
-        if (msg !== "ok") {
-            alert(msg); // erro do servidor
+    .then(res => res.text().then(msg => ({ ok: res.ok, msg })))
+    .then(res => {
+        if (!res.ok) {
+            alert("Erro: " + res.msg);
         } else {
             alert("Inscrição feita!");
         }
@@ -39,6 +39,7 @@ function enviar() {
         alert("Erro ao enviar");
     });
 }
+
 // 📋 CARREGAR LISTA
 function carregar() {
     fetch("https://copabrawl.onrender.com/list")
@@ -50,7 +51,11 @@ function carregar() {
 
         const contador = document.getElementById("contador");
         const max = 64;
-        contador.innerText = `${data.length}/${max}`;
+
+        // ✔ NÃO CRASHA MAIS
+        if (contador) {
+            contador.innerText = `${data.length}/${max}`;
+        }
 
         data.forEach((player) => {
             const li = document.createElement("li");
@@ -65,6 +70,9 @@ function carregar() {
 
             lista.appendChild(li);
         });
+    })
+    .catch(err => {
+        console.error("Erro ao carregar:", err);
     });
 }
 
@@ -75,12 +83,17 @@ function deletar(id) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
     })
-    .then(res => res.text())
-    .then(() => carregar())
+    .then(res => res.text().then(msg => ({ ok: res.ok, msg })))
+    .then(res => {
+        if (!res.ok) {
+            alert("Erro ao deletar: " + res.msg);
+        }
+        carregar();
+    })
     .catch(err => console.error("Erro ao deletar:", err));
 }
 
-// 🚪 LOGOUT ADMIN (opcional)
+// 🚪 LOGOUT ADMIN
 function logout() {
     isAdmin = false;
     localStorage.removeItem("admin");
@@ -88,5 +101,5 @@ function logout() {
     carregar();
 }
 
-// carregar ao abrir
+// 🚀 carregar ao abrir
 carregar();
