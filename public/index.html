@@ -22,14 +22,20 @@ body {
 /* 🌿 PARALLAX BACKGROUND */
 .parallax {
     position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
+    width: 220%;
+    height: 220%;
+    top: -60%;
+    left: -60%;
+
     background: url("ThrophyVines.png") repeat;
-    background-size: 180px; /* 👈 MENOR */
-    opacity: 0.2;
+
+    background-size: 220px; /* 👈 tamanho da imagem */
+    background-position: 0 0;
+
+    opacity: 0.18;
     pointer-events: none;
+
+    transform: rotate(-25deg); /* 🔥 deixa diagonal */
 }
 
 /* 🧊 CONTAINER */
@@ -111,10 +117,10 @@ let x = 0
 let y = 0
 
 function animar() {
-    x += 0.08   // 👉 velocidade horizontal
-    y -= 0.08   // 👉 sobe diagonal ↗
+    x += 0.4   // 👉 BEM MAIS RÁPIDO
+    y -= 0.4   // 👉 diagonal ↗
 
-    parallax.style.transform = `translate(${x}px, ${y}px)`
+    parallax.style.transform = `translate(${x}px, ${y}px) rotate(-25deg)`
 
     requestAnimationFrame(animar)
 }
