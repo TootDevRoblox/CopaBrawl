@@ -49,7 +49,7 @@ body {
     box-shadow: 0 0 40px rgba(0,255,120,0.2);
 }
 
-/* 🧱 TÍTULO BASE */
+/* 🧱 TÍTULO */
 h1 {
     margin-bottom: 10px;
     font-size: 30px;
@@ -64,7 +64,6 @@ h1 {
         0 0 12px rgba(255,255,255,0.3);
 }
 
-/*  PARTE VERDE */
 .title-green {
     color: #00ff88;
     text-shadow:
@@ -77,9 +76,37 @@ h1 {
     color: #00ff88;
     font-weight: bold;
     margin-bottom: 15px;
-        text-shadow:
+    text-shadow:
         0 0 8px #00ff88,
         0 0 16px rgba(0,255,136,0.6);
+}
+
+/* 📦 BOX DOS INPUTS */
+.input-box {
+    position: relative;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+/* 🌿 BORDA (SUA IMAGEM) */
+.vine-border {
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    width: calc(100% + 50px);
+    height: calc(100% + 50px);
+
+    background: url("Details01.png") no-repeat center;
+    background-size: contain;
+
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* garante que inputs fiquem na frente */
+.input-box * {
+    position: relative;
+    z-index: 2;
 }
 
 /* INPUTS */
@@ -129,7 +156,6 @@ ul {
     overflow-y: auto;
 }
 
-/* PLAYERS */
 li {
     background: rgba(0,255,136,0.08);
     padding: 8px;
@@ -137,14 +163,12 @@ li {
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
-    transition: 0.2s;
 }
 
 li:hover {
     background: rgba(0,255,136,0.2);
 }
 
-/* BOTÃO DELETE */
 li button {
     background: #00ff88;
     color: #002b16;
@@ -169,8 +193,14 @@ li button {
 
     <p id="contador">0/64</p>
 
-    <input type="text" id="nick" placeholder="Nick">
-    <input type="text" id="id" placeholder="ID">
+    <!-- 📦 INPUTS COM BORDA -->
+    <div class="input-box">
+        <div class="vine-border"></div>
+
+        <input type="text" id="nick" placeholder="Nick">
+        <input type="text" id="id" placeholder="ID">
+    </div>
+
     <button onclick="enviar()">Entrar</button>
 
     <ul id="lista"></ul>
