@@ -2,8 +2,42 @@ let isAdmin = localStorage.getItem("admin") === "true";
 
 // 👑 LOGIN / ENVIO
 function enviar() {
-    alert("Envios estão desativados!");
-    return;
+    const nick = document.getElementById("nick").value.trim();
+    const id = document.getElementById("id").value.trim();
+
+    if (!nick || !id) {
+        alert("Preencha tudo!");
+        return;
+    }
+
+    // 👑 admin
+    if (nick === "C#Lipeh777") {
+        isAdmin = true;
+        localStorage.setItem("admin", "true");
+        alert("Modo admin ativado!");
+    }
+
+    fetch("https://copabrawl.onrender.com/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nick, id })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        if (msg !== "ok") {
+            alert(msg); // erro do servidor
+        } else {
+            alert("Inscrição feita!");
+        }
+
+        carregar();
+    })
+    .catch(err => {
+        console.error("Erro:", err);
+        alert("Erro ao enviar");
+    });
 }
 // 📋 CARREGAR LISTA
 function carregar() {
