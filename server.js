@@ -1,102 +1,96 @@
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const { createClient } = require("@supabase/supabase-js");
+const express = require("express")
+const cors = require("cors")
+const { createClient } = require("@supabase/supabase-js")
 
-const app = express();
-app.use(express.json());
-app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+const app = express()
+app.use(express.json())
+app.use(cors())
 
-const PORT = process.env.PORT || 3000;
+// 🔐 ENV VARIABLES (Render)
+const SUPABASE_URL = process.env.SUPABASE_URL
+const SUPABASE_KEY = process.env.SUPABASE_KEY
 
-// 🔹 Configuração Supabase
-const SUPABASE_URL = "https://wtvitgtsrykgbqixrppv.supabase.co";
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_KEY;
-
-// proteção pra não crashar
-if (!SUPABASE_SERVICE_KEY) {
-    console.error("❌ SUPABASE_KEY não encontrada!");
+// ⚠️ segurança básica
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.error("❌ ERRO: Variáveis do Supabase não carregadas!")
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+// 🔗 conexão
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-// Rota principal
+// 🧪 rota teste
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+    res.send("Servidor conectado ao Supabase 🚀")
+})
 
-// Adicionar jogador
+// ➕ ADD PLAYER
 app.post("/add", async (req, res) => {
-    const { nick, id } = req.body;
+    const { nick, id } = req.body
 
-    if (!nick || !id) return res.status(400).send("Dados inválidos");
-    if (nick.length > 100 || id.length > 50) return res.status(400).send("Texto muito grande");
+    if (!nick || !id) {
+        return res.status(400).send("Dados inválidos")
+    }
 
     try {
-        const { data: existe, error: findError } = await supabase
-            .from("nick")
-            .select("*")
-            .eq("id", id)
-            .single();
+        const { error } = await supabase
+            .from("players")
+            .insert([{ nick, id }])
 
-        if (findError && findError.code !== "PGRST116") throw findError;
-        if (existe) return res.status(400).send("ID já registrado");
+        if (error) {
+            console.error("SUPABASE ERROR:", error)
+            return res.status(500).send(error.message)
+        }
 
-        const { error } = await supabase.from("nick").insert([{ nick, id }]);
-        if (error) throw error;
-
-        console.log("Novo jogador:", { nick, id });
-        res.send("ok");
+        res.send("ok")
     } catch (err) {
-        console.error("Erro ao adicionar:", err);
-        res.status(500).send("Erro no servidor");
+        console.error("ERRO SERVIDOR:", err)
+        res.status(500).send("Erro interno")
     }
-});
+})
 
-// Listar jogadores
+// 📋 LISTAR
 app.get("/list", async (req, res) => {
     try {
-        const { data, error } = await supabase.from("nick").select("*");
-        if (error) throw error;
-        res.json(data);
-    } catch (err) {
-        console.error("Erro ao listar:", err);
-        res.status(500).send("Erro no servidor");
-    }
-});
+        const { data, error } = await supabase
+            .from("players")
+            .select("*")
 
-// Deletar jogador
+        if (error) {
+            return res.status(500).send(error.message)
+        }
+
+        res.json(data)
+    } catch (err) {
+        res.status(500).send("Erro ao buscar")
+    }
+})
+
+// 🗑️ DELETAR
 app.post("/delete", async (req, res) => {
-    const { id } = req.body;
-    if (!id) return res.status(400).send("ID inválido");
+    const { id } = req.body
+
+    if (!id) {
+        return res.status(400).send("ID inválido")
+    }
 
     try {
-        const { error } = await supabase.from("nick").delete().eq("id", id);
-        if (error) throw error;
+        const { error } = await supabase
+            .from("players")
+            .delete()
+            .eq("id", id)
 
-        res.send("deleted");
+        if (error) {
+            return res.status(500).send(error.message)
+        }
+
+        res.send("deleted")
     } catch (err) {
-        console.error("Erro ao deletar:", err);
-        res.status(500).send("Erro no servidor");
+        res.status(500).send("Erro ao deletar")
     }
-});
+})
 
-// teste direto
-app.get("/teste", async (req, res) => {
-    const { error } = await supabase
-        .from("nick")
-        .insert([{ nick: "teste", id: "999" }]);
+const PORT = process.env.PORT || 3000
 
-    if (error) {
-        console.error("ERRO:", error);
-        return res.send("erro: " + error.message);
-    }
-
-    res.send("salvou");
-});
-
-// iniciar servidor
 app.listen(PORT, () => {
-    console.log("Servidor rodando na porta", PORT);
-});
+    console.log("🚀 Server rodando na porta " + PORT)
+})
