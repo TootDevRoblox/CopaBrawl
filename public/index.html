@@ -14,13 +14,9 @@
 }
 
 /* 🔥 CENTRALIZAÇÃO */
-html, body {
-    height: 100%;
-}
-
 body {
+    height: 100vh;
     overflow: hidden;
-    touch-action: manipulation;
 
     display: flex;
     justify-content: center;
@@ -39,61 +35,82 @@ body {
     pointer-events: none;
 
     transform: rotate(-25deg) scale(1.2);
+    will-change: transform;
 }
 
-/* WRAPPER */
+/* WRAPPER PRINCIPAL */
 .wrapper {
     display: flex;
     align-items: center;
     gap: 50px;
-    flex-wrap: wrap;
-    justify-content: center;
 }
 
-/* LATERAL */
+/* 🌟 LATERAL */
 .side-info {
     color: white;
     max-width: 220px;
-    text-align: center;
 }
 
 .side-info h2 {
+    font-size: 20px;
     margin-bottom: 15px;
+
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,255,255,0.2);
 }
 
-/* OURO */
+/* 🥇 OURO */
 .gold {
+    font-size: 18px;
     font-weight: bold;
+
     background: linear-gradient(90deg, #ffd700, #ffae00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(255,215,0,0.6),
+        0 0 12px rgba(255,215,0,0.4);
+
+    margin-bottom: 10px;
 }
 
-/* PRATA */
+/* 🥈 PRATA */
 .silver {
+    font-size: 16px;
+
     background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(192,192,192,0.6),
+        0 0 12px rgba(192,192,192,0.4);
 }
 
-/* CARD AREA */
+/* 🔥 ÁREA DO CARD (ISOLADA) */
 .card-area {
     position: relative;
 }
 
-/* VINE */
+/* 🌿 VINE (AGORA INDEPENDENTE) */
 .vine {
     position: absolute;
     inset: -40px;
+
     background: url("Details01.png") center no-repeat;
     background-size: 115%;
     opacity: 0.7;
     transform: scaleY(1.35);
+
     z-index: 2;
     pointer-events: none;
+
+    filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
 }
 
-/* CONTAINER */
+/* 🧊 CONTAINER */
 .container {
     position: relative;
     z-index: 1;
@@ -106,41 +123,122 @@ body {
     background: rgba(0,0,0,0.75);
     padding: 40px;
     border-radius: 20px;
+    text-align: center;
     color: #fff;
+
+    box-shadow:
+        0 0 20px rgba(56,255,106,0.2),
+        0 0 40px rgba(56,255,106,0.15);
 
     overflow: hidden;
 }
 
+/* TÍTULO */
+h1 {
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.title-white {
+    color: #ffffff;
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.6),
+        0 0 12px rgba(255,255,255,0.3);
+}
+
+.title-green {
+    color: #38ff6a;
+    text-shadow:
+        0 0 8px #38ff6a,
+        0 0 16px rgba(56,255,106,0.6);
+}
+
+/* CONTADOR */
+#contador {
+    color: #38ff6a;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
 /* INPUTS */
 input {
+    width: 100%;
     padding: 12px;
     margin-bottom: 10px;
     border-radius: 10px;
     border: none;
+    outline: none;
     background: #0b2e1a;
     color: #fff;
 }
 
+input::placeholder {
+    color: #88c9a1;
+}
+
+input:focus {
+    box-shadow: 0 0 12px #38ff6a;
+}
+
 /* BOTÃO */
 button {
+    width: 100%;
     padding: 12px;
     border-radius: 10px;
     border: none;
-    background: #38ff6a;
+    background: linear-gradient(90deg, #38ff6a, #1ed760);
+    color: #002b16;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.25s;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #1ed760, #0f9d3a);
+    transform: scale(1.03);
 }
 
 /* LISTA */
 ul {
+    margin-top: 15px;
+    list-style: none;
+
     flex: 1;
     overflow-y: auto;
-    margin-top: 10px;
+
+    padding-right: 5px;
+}
+
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+ul::-webkit-scrollbar-thumb {
+    background: #38ff6a;
+    border-radius: 10px;
 }
 
 li {
+    background: rgba(56,255,106,0.08);
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+}
+
+li:hover {
+    background: rgba(56,255,106,0.2);
+}
+
+li button {
+    background: #38ff6a;
+    color: #002b16;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -151,19 +249,24 @@ li {
 
 <div class="wrapper">
 
+    <!-- 🌟 LATERAL -->
     <div class="side-info">
         <h2>Campeões da Season 1:</h2>
         <p class="gold">#1 xp.Mateus 🥇</p>
         <p class="silver">#2 Bob_Marley 🥈</p>
     </div>
 
+    <!-- 🔥 CARD AREA (ISOLADO) -->
     <div class="card-area">
 
         <div class="vine"></div>
 
         <div class="container">
 
-            <h1>Copa Brawl Season 2</h1>
+            <h1>
+                <span class="title-white">Copa Brawl:</span>
+                <span class="title-green"> Season 2</span>
+            </h1>
 
             <p id="contador">0/64</p>
 
