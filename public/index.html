@@ -122,7 +122,7 @@ body {
     z-index: 1;
     width: 100%;
     max-width: 370px;
-    min-height: 520px;
+    height: 520px;
     display: flex;
     flex-direction: column;
     background: rgba(0,0,0,0.75);
@@ -187,6 +187,7 @@ ul {
     margin-top: 10px;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 li {
@@ -196,6 +197,37 @@ li {
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #ff3c3c, #ff0000);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(255,0,0,0.5);
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(255,0,0,0.8);
+}
+
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+ul::-webkit-scrollbar-thumb {
+    background: #38ff6a;
+    border-radius: 10px;
+}
+
+ul::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 @media (max-width: 768px) {
@@ -221,6 +253,7 @@ li {
 
     .container {
         padding: 25px;
+        height: 500px;
     }
 
     h1 {
