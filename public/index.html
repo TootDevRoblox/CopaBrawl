@@ -13,7 +13,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* 🔥 CENTRALIZAÇÃO SEM BUG */
+/* 🔥 CENTRALIZAÇÃO */
 body {
     height: 100vh;
     overflow: hidden;
@@ -25,7 +25,7 @@ body {
     background: linear-gradient(135deg, #04140c, #0b2e1a, #0f3d24);
 }
 
-/* 🌿 PARALLAX (SEM CORTE / SEM GLITCH) */
+/* 🌿 PARALLAX */
 .parallax {
     position: fixed;
     inset: -50%;
@@ -43,9 +43,25 @@ body {
     position: relative;
 }
 
+/* 🌿 VINE (FORA DO CONTAINER) */
+.vine {
+    position: absolute;
+    inset: -40px;
+
+    background: url("Details01.png") center no-repeat;
+    background-size: 170%;
+
+    z-index: 2;
+    pointer-events: none;
+
+    filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
+}
+
 /* 🧊 CONTAINER */
 .container {
     position: relative;
+    z-index: 1;
+
     width: 370px;
     background: rgba(0,0,0,0.75);
     padding: 40px;
@@ -57,27 +73,7 @@ body {
         0 0 20px rgba(56,255,106,0.2),
         0 0 40px rgba(56,255,106,0.15);
 
-   overflow: visible;
-}
-
-/* 🌿 VINES (PERFEITO) */
-.container::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background: url("Details01.png") center no-repeat;
-    background-size: 170%;
-
-    opacity: 0.15;
-    z-index: 3; /* 👈 AGORA FICA NA FRENTE */
-    pointer-events: none;
-}
-
-/* CONTEÚDO NA FRENTE */
-.container > * {
-    position: relative;
-    z-index: 1;
+    overflow: hidden;
 }
 
 /* TÍTULO */
@@ -183,6 +179,10 @@ li button {
 <div class="parallax" id="parallax"></div>
 
 <div class="wrapper">
+
+    <!-- 🌿 VINE LIVRE -->
+    <div class="vine"></div>
+
     <div class="container">
 
         <h1>
