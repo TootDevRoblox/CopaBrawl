@@ -29,29 +29,21 @@ app.get("/", (req, res) => {
 
 // ➕ ADICIONAR PLAYER
 app.post("/add", async (req, res) => {
-    const { nick, id } = req.body
+    let { nick, id } = req.body
 
-    if (!nick || !id) {
-        return res.status(400).send("Dados inválidos")
+    console.log("Recebido:", nick, id)
+
+    const { data, error } = await supabase
+        .from("players")
+        .insert([{ nick, id }])
+
+    if (error) {
+        console.error("SUPABASE ERROR:", error)
+        return res.status(500).send(error.message)
     }
 
-    try {
-        const { error } = await supabase
-            .from("players")
-            .insert([{ nick, id }])
-
-        if (error) {
-            console.error("SUPABASE ERROR:", error)
-            return res.status(500).send(error.message)
-        }
-
-        res.send("ok")
-    } catch (err) {
-        console.error("ERRO SERVIDOR:", err)
-        res.status(500).send("Erro interno")
-    }
+    res.send("ok")
 })
-
 // 📋 LISTAR PLAYERS
 app.get("/list", async (req, res) => {
     try {
