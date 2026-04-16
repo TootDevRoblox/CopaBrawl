@@ -13,10 +13,11 @@ function enviar() {
 
     if (!nick || !id) return
 
-    // 👑 admin simples
+    // 👑 ADMIN (NÃO SALVA)
     if (id === "admin123") {
         isAdmin = true
         alert("Modo admin ativado!")
+        return // 🚨 impede de ir pro banco
     }
 
     fetch("/add", {
