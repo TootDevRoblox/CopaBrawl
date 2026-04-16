@@ -1,105 +1,96 @@
-let isAdmin = localStorage.getItem("admin") === "true";
+// CONFIG
+const LIMITE = 64
+const CODIGO_ADM = "admin123" // 👈 muda isso depois
 
-// 👑 LOGIN / ENVIO
+// ELEMENTOS
+const lista = document.getElementById("lista")
+const contador = document.getElementById("contador")
+
+// ESTADO
+let players = JSON.parse(localStorage.getItem("players")) || []
+let isADM = false
+
+// INIT
+render()
+
+// FUNÇÃO PRINCIPAL
 function enviar() {
-    const nick = document.getElementById("nick").value.trim();
-    const id = document.getElementById("id").value.trim();
+    const nickInput = document.getElementById("nick")
+    const idInput = document.getElementById("id")
 
-    if (!nick || !id) {
-        alert("Preencha tudo!");
-        return;
+    const nick = nickInput.value.trim()
+    const id = idInput.value.trim()
+
+    if (!nick || !id) return
+
+    // 🔐 Ativar ADM
+    if (id === CODIGO_ADM) {
+        isADM = true
+        alert("Modo ADM ativado")
+        idInput.value = ""
+        return
     }
 
-    // 👑 admin
-    if (nick === "C#Lipeh777") {
-        isAdmin = true;
-        localStorage.setItem("admin", "true");
-        alert("Modo admin ativado!");
+    // 🚫 limite
+    if (players.length >= LIMITE) {
+        alert("Lista cheia!")
+        return
     }
 
-    fetch("https://copabrawl.onrender.com/add", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ nick, id })
-    })
-    .then(res => res.text().then(msg => ({ ok: res.ok, msg })))
-    .then(res => {
-        if (!res.ok) {
-            alert("Erro: " + res.msg);
-        } else {
-            alert("Inscrição feita!");
-        }
+    // 🚫 duplicado
+    const existe = players.some(p => p.nick === nick || p.id === id)
+    if (existe) {
+        alert("Jogador já existe!")
+        return
+    }
 
-        carregar();
-    })
-    .catch(err => {
-        console.error("Erro:", err);
-        alert("Erro ao enviar");
-    });
+    // ADD
+    players.push({ nick, id })
+
+    salvar()
+    render()
+
+    // limpar input
+    nickInput.value = ""
+    idInput.value = ""
 }
 
-// 📋 CARREGAR LISTA
-function carregar() {
-    fetch("https://copabrawl.onrender.com/list")
-    .then(res => res.json())
-    .then(data => {
+// RENDER
+function render() {
+    lista.innerHTML = ""
 
-        const lista = document.getElementById("lista");
-        lista.innerHTML = "";
+    players.forEach((p, index) => {
+        const li = document.createElement("li")
 
-        const contador = document.getElementById("contador");
-        const max = 64;
+        li.innerHTML = `
+            ${p.nick} (${p.id})
+            ${isADM ? `<button onclick="remover(${index})">X</button>` : ""}
+        `
 
-        // ✔ NÃO CRASHA MAIS
-        if (contador) {
-            contador.innerText = `${data.length}/${max}`;
-        }
-
-        data.forEach((player) => {
-            const li = document.createElement("li");
-            li.innerText = player.nick + " - " + player.id;
-
-            if (isAdmin) {
-                const btn = document.createElement("button");
-                btn.innerText = "Deletar";
-                btn.onclick = () => deletar(player.id);
-                li.appendChild(btn);
-            }
-
-            lista.appendChild(li);
-        });
+        lista.appendChild(li)
     })
-    .catch(err => {
-        console.error("Erro ao carregar:", err);
-    });
+
+    atualizarContador()
 }
 
-// 🗑️ DELETAR
-function deletar(id) {
-    fetch("https://copabrawl.onrender.com/delete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    })
-    .then(res => res.text().then(msg => ({ ok: res.ok, msg })))
-    .then(res => {
-        if (!res.ok) {
-            alert("Erro ao deletar: " + res.msg);
-        }
-        carregar();
-    })
-    .catch(err => console.error("Erro ao deletar:", err));
+// REMOVER (ADM)
+function remover(index) {
+    if (!isADM) return
+
+    players.splice(index, 1)
+
+    salvar()
+    render()
 }
 
-// 🚪 LOGOUT ADMIN
-function logout() {
-    isAdmin = false;
-    localStorage.removeItem("admin");
-    alert("Saiu do modo admin");
-    carregar();
+// CONTADOR
+function atualizarContador() {
+    if (contador) {
+        contador.textContent = `${players.length}/${LIMITE}`
+    }
 }
 
-// 🚀 carregar ao abrir
-carregar();
+// SALVAR
+function salvar() {
+    localStorage.setItem("players", JSON.stringify(players))
+}
