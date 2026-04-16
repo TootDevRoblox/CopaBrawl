@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 🔥 LIBERA ZOOM NO CELULAR -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<!-- 🔥 ZOOM LIBERADO DE VERDADE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <title>Copa Brawl</title>
 
@@ -18,7 +18,7 @@
 
 body {
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: auto; /* 👈 importante pro zoom */
 
     display: flex;
     justify-content: center;
@@ -42,27 +42,28 @@ body {
 /* WRAPPER */
 .wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 50px;
+
+    max-width: 95vw; /* 👈 evita travar zoom */
 }
 
 /* 🌟 LATERAL */
 .side-info {
     color: white;
-    max-width: 240px;
+    max-width: 260px;
 }
 
-/* 🔴 TÍTULO BRAWLERS */
+/* 🔴 BRAWLERS */
 .brawlers-title {
-    color: #ff4d4d;
+    color: #ff3c3c;
     font-weight: bold;
     margin-bottom: 10px;
 
-    text-shadow:
-        0 0 4px rgba(255,0,0,0.4);
+    text-shadow: 0 0 4px rgba(255,0,0,0.5);
 }
 
-/* 📦 BRAWLER ITEM */
+/* 📦 ITEM */
 .brawler {
     display: flex;
     align-items: center;
@@ -70,21 +71,20 @@ body {
     margin-bottom: 8px;
 }
 
-/* GIF */
 .brawler img {
     width: 40px;
     height: 40px;
-    object-fit: contain;
 }
 
 /* TEXTO */
 .brawler span {
     color: white;
+    font-size: 14px;
 }
 
-/* 🔽 EMPURRAR CAMPEÕES PRA BAIXO */
+/* 🏆 CAMPEÕES */
 .champions {
-    margin-top: 25px;
+    margin-top: 30px;
 }
 
 .side-info h2 {
@@ -92,22 +92,30 @@ body {
     margin-bottom: 10px;
 }
 
-/* 🥇 */
+/* 🥇 GOLD */
 .gold {
     font-weight: bold;
     background: linear-gradient(90deg, #ffd700, #ffae00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(255,215,0,0.6),
+        0 0 12px rgba(255,215,0,0.4);
 }
 
-/* 🥈 */
+/* 🥈 SILVER */
 .silver {
     background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(192,192,192,0.6),
+        0 0 12px rgba(192,192,192,0.4);
 }
 
-/* CARD */
+/* 🧊 CARD */
 .container {
     width: 370px;
     height: 520px;
@@ -132,12 +140,16 @@ h1 {
 
 .title-white {
     color: #fff;
-    text-shadow: 0 0 6px rgba(255,255,255,0.4);
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,255,255,0.3);
 }
 
 .title-green {
     color: #38ff6a;
-    text-shadow: 0 0 10px rgba(56,255,106,0.5);
+    text-shadow:
+        0 0 10px rgba(56,255,106,0.7),
+        0 0 20px rgba(56,255,106,0.5);
 }
 
 /* CONTADOR */
@@ -191,28 +203,26 @@ li {
 
 <div class="wrapper">
 
-    <!-- 🌟 LATERAL -->
+    <!-- 🌟 LADO -->
     <div class="side-info">
 
-        <!-- 🔴 BRAWLERS -->
         <div class="brawlers-title">Brawlers do Campeonato:</div>
 
         <div class="brawler">
             <img src="Maisie.gif">
-            <span>1° Maisie</span>
+            <span>Maisie.gif : 1° Maisie</span>
         </div>
 
         <div class="brawler">
             <img src="Gray.gif">
-            <span>2° Gray</span>
+            <span>Gray.gif : 2° Gray</span>
         </div>
 
         <div class="brawler">
             <img src="Colt.gif">
-            <span>3° Colt</span>
+            <span>Colt.gif : 3° Colt</span>
         </div>
 
-        <!-- 🏆 CAMPEÕES -->
         <div class="champions">
             <h2>Campeões da Season 1:</h2>
             <p class="gold">#1 xp.Mateus 🥇</p>
