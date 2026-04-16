@@ -61,16 +61,16 @@ body {
 }
 
 /* 🌿 VINES (PERFEITO) */
-.container::before {
+.container::after {
     content: "";
     position: absolute;
     inset: 0;
 
     background: url("Details01.png") center no-repeat;
-    background-size: 180%; /* 👈 AQUI você controla o tamanho */
+    background-size: 170%;
 
     opacity: 0.15;
-    z-index: 0;
+    z-index: 3; /* 👈 AGORA FICA NA FRENTE */
     pointer-events: none;
 }
 
