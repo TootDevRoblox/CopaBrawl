@@ -43,7 +43,7 @@ body {
     position: relative;
 }
 
-/* 🌿 VINE (FORA DO CONTAINER) */
+/* 🌿 VINE */
 .vine {
     position: absolute;
     inset: -40px;
@@ -65,6 +65,10 @@ body {
     z-index: 1;
 
     width: 370px;
+    height: 520px; /* 🔥 trava o tamanho */
+    display: flex;
+    flex-direction: column;
+
     background: rgba(0,0,0,0.75);
     padding: 40px;
     border-radius: 20px;
@@ -144,14 +148,28 @@ button:hover {
     transform: scale(1.03);
 }
 
-/* LISTA */
+/* 🔥 LISTA (SCROLL FIXO) */
 ul {
     margin-top: 15px;
     list-style: none;
-    max-height: 200px;
+
+    flex: 1;
     overflow-y: auto;
+
+    padding-right: 5px;
 }
 
+/* SCROLL BONITA */
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+ul::-webkit-scrollbar-thumb {
+    background: #38ff6a;
+    border-radius: 10px;
+}
+
+/* ITENS */
 li {
     background: rgba(56,255,106,0.08);
     padding: 8px;
@@ -182,7 +200,6 @@ li button {
 
 <div class="wrapper">
 
-    <!-- 🌿 VINE LIVRE -->
     <div class="vine"></div>
 
     <div class="container">
