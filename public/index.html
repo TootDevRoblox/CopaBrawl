@@ -46,11 +46,32 @@ body {
     border-radius: 20px;
     text-align: center;
     color: #fff;
+    overflow: hidden;
 
-    /* glow */
     box-shadow:
         0 0 20px rgba(56,255,106,0.2),
         0 0 40px rgba(56,255,106,0.15);
+}
+
+/* 🌿 IMAGEM PREENCHENDO (tipo Roblox 1,0 / 1,0) */
+.vine-bg {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    opacity: 0.25;
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* garante que tudo fique acima */
+.container * {
+    position: relative;
+    z-index: 2;
 }
 
 /* 🧱 TÍTULO */
@@ -163,6 +184,9 @@ li button {
 <div class="parallax" id="parallax"></div>
 
 <div class="container">
+
+    <!-- 🌿 IMAGEM -->
+    <img src="Details01.png" class="vine-bg">
 
     <h1>
         <span class="title-white">Copa Brawl:</span>
