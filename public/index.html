@@ -38,51 +38,11 @@ body {
     will-change: transform;
 }
 
-/* WRAPPER (AGORA EM LINHA) */
+/* WRAPPER PRINCIPAL */
 .wrapper {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 50px;
-}
-
-/* 🌿 VINE */
-.vine {
-    position: absolute;
-    inset: -40px;
-
-    background: url("Details01.png") center no-repeat;
-    background-size: 115%;
-    opacity: 0.4;
-    transform: scaleY(1.15);
-
-    z-index: 2;
-    pointer-events: none;
-
-    filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
-}
-
-/* 🧊 CONTAINER */
-.container {
-    position: relative;
-    z-index: 1;
-
-    width: 370px;
-    height: 520px;
-    display: flex;
-    flex-direction: column;
-
-    background: rgba(0,0,0,0.75);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    color: #fff;
-
-    box-shadow:
-        0 0 20px rgba(56,255,106,0.2),
-        0 0 40px rgba(56,255,106,0.15);
-
-    overflow: hidden;
 }
 
 /* 🌟 LATERAL */
@@ -91,7 +51,6 @@ body {
     max-width: 220px;
 }
 
-/* TÍTULO LATERAL */
 .side-info h2 {
     font-size: 20px;
     margin-bottom: 15px;
@@ -130,7 +89,51 @@ body {
         0 0 12px rgba(192,192,192,0.4);
 }
 
-/* TÍTULO PRINCIPAL */
+/* 🔥 ÁREA DO CARD (ISOLADA) */
+.card-area {
+    position: relative;
+}
+
+/* 🌿 VINE (AGORA INDEPENDENTE) */
+.vine {
+    position: absolute;
+    inset: -40px;
+
+    background: url("Details01.png") center no-repeat;
+    background-size: 115%;
+    opacity: 0.4;
+    transform: scaleY(1.15);
+
+    z-index: 2;
+    pointer-events: none;
+
+    filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
+}
+
+/* 🧊 CONTAINER */
+.container {
+    position: relative;
+    z-index: 1;
+
+    width: 370px;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+
+    background: rgba(0,0,0,0.75);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: #fff;
+
+    box-shadow:
+        0 0 20px rgba(56,255,106,0.2),
+        0 0 40px rgba(56,255,106,0.15);
+
+    overflow: hidden;
+}
+
+/* TÍTULO */
 h1 {
     margin-bottom: 10px;
     font-size: 30px;
@@ -246,34 +249,37 @@ li button {
 
 <div class="wrapper">
 
-    <!-- 🌟 LADO ESQUERDO -->
+    <!-- 🌟 LATERAL -->
     <div class="side-info">
         <h2>Campeões da Season 1:</h2>
         <p class="gold">#1 xp.Mateus</p>
         <p class="silver">#2 Bob_Marley</p>
     </div>
 
-    <!-- 🌿 VINE -->
-    <div class="vine"></div>
+    <!-- 🔥 CARD AREA (ISOLADO) -->
+    <div class="card-area">
 
-    <!-- 🧊 CONTAINER -->
-    <div class="container">
+        <div class="vine"></div>
 
-        <h1>
-            <span class="title-white">Copa Brawl:</span>
-            <span class="title-green"> Season 2</span>
-        </h1>
+        <div class="container">
 
-        <p id="contador">0/64</p>
+            <h1>
+                <span class="title-white">Copa Brawl:</span>
+                <span class="title-green"> Season 2</span>
+            </h1>
 
-        <input type="text" id="nick" placeholder="Nick">
-        <input type="text" id="id" placeholder="ID">
+            <p id="contador">0/64</p>
 
-        <button onclick="enviar()">Entrar</button>
+            <input type="text" id="nick" placeholder="Nick">
+            <input type="text" id="id" placeholder="ID">
 
-        <ul id="lista"></ul>
+            <button onclick="enviar()">Entrar</button>
 
+            <ul id="lista"></ul>
+
+        </div>
     </div>
+
 </div>
 
 <script>
