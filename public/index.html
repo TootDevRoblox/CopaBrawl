@@ -19,7 +19,7 @@ body {
     background: linear-gradient(135deg, #04140c, #0b2e1a, #0f3d24);
 }
 
-/* 🌿 PARALLAX (SUAVE E SEM BUG) */
+/* 🌿 PARALLAX */
 .parallax {
     position: absolute;
     width: 150%;
@@ -33,7 +33,7 @@ body {
     transform: rotate(-25deg);
 }
 
-/* 🔲 WRAPPER CENTRALIZADO CORRETAMENTE */
+/* CENTRALIZAÇÃO */
 .wrapper {
     position: absolute;
     top: 50%;
@@ -41,21 +41,9 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* 🌿 IMAGEM OVERLAY */
-.vine-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
-    z-index: 1;
-}
-
 /* 🧊 CONTAINER */
 .container {
     position: relative;
-    z-index: 2;
     width: 370px;
     background: rgba(0,0,0,0.75);
     padding: 40px;
@@ -66,9 +54,28 @@ body {
     box-shadow:
         0 0 20px rgba(56,255,106,0.2),
         0 0 40px rgba(56,255,106,0.15);
+
+    overflow: hidden; /* 👈 impede qualquer vazamento */
 }
 
-/* 🧱 TÍTULO */
+/* 🌿 VINES (CORRETO E PROFISSIONAL) */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("Details01.png") center/cover no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* GARANTE QUE O CONTEÚDO FIQUE NA FRENTE */
+.container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* TÍTULO */
 h1 {
     margin-bottom: 10px;
     font-size: 30px;
@@ -89,7 +96,7 @@ h1 {
         0 0 16px rgba(56,255,106,0.6);
 }
 
-/* 🔢 CONTADOR */
+/* CONTADOR */
 #contador {
     color: #38ff6a;
     font-weight: bold;
@@ -106,7 +113,6 @@ input {
     outline: none;
     background: #0b2e1a;
     color: #fff;
-    transition: 0.2s;
 }
 
 input::placeholder {
@@ -172,10 +178,6 @@ li button {
 <div class="parallax" id="parallax"></div>
 
 <div class="wrapper">
-
-    <!-- 🌿 IMAGEM -->
-    <img src="Details01.png" class="vine-bg">
-
     <div class="container">
 
         <h1>
@@ -193,7 +195,6 @@ li button {
         <ul id="lista"></ul>
 
     </div>
-
 </div>
 
 <script>
