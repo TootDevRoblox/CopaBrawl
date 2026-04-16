@@ -13,26 +13,25 @@ function enviar() {
 
     if (!nick || !id) return
 
-    if (total >= max) {
-        alert("Lotado!")
-        return
-    }
-
-    // 👑 ativar admin
-    if (id === "admin123") {
-        isAdmin = true
-        alert("Modo admin ativado!")
-    }
-
-    // 💾 salva os DOIS agora
-    players.push({ nick, id })
-
-    total++
-    atualizar()
-    renderizar()
-
-    document.getElementById("nick").value = ""
-    document.getElementById("id").value = ""
+    fetch("/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nick, id })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        if (msg !== "ok") {
+            alert(msg)
+        } else {
+            carregar()
+        }
+    })
+    .catch(err => {
+        console.error(err)
+        alert("Erro ao enviar")
+    })
 }
 
 function renderizar() {
