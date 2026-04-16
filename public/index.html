@@ -13,10 +13,14 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* 🔥 BODY FIX MOBILE */
+/* 🔥 CENTRALIZAÇÃO */
+html, body {
+    height: 100%;
+}
+
 body {
-    min-height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
+    touch-action: manipulation;
 
     display: flex;
     justify-content: center;
@@ -35,8 +39,6 @@ body {
     pointer-events: none;
 
     transform: rotate(-25deg) scale(1.2);
-    will-change: transform;
-    backface-visibility: hidden;
 }
 
 /* WRAPPER */
@@ -44,16 +46,19 @@ body {
     display: flex;
     align-items: center;
     gap: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* LATERAL */
 .side-info {
     color: white;
     max-width: 220px;
+    text-align: center;
 }
 
 .side-info h2 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 /* OURO */
@@ -80,12 +85,10 @@ body {
 .vine {
     position: absolute;
     inset: -40px;
-
     background: url("Details01.png") center no-repeat;
     background-size: 115%;
-    opacity: 0.5;
-    transform: scaleY(1.2);
-
+    opacity: 0.7;
+    transform: scaleY(1.35);
     z-index: 2;
     pointer-events: none;
 }
@@ -101,38 +104,43 @@ body {
     flex-direction: column;
 
     background: rgba(0,0,0,0.75);
-    padding: 30px;
+    padding: 40px;
     border-radius: 20px;
-    color: white;
+    color: #fff;
 
     overflow: hidden;
+}
+
+/* INPUTS */
+input {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #0b2e1a;
+    color: #fff;
+}
+
+/* BOTÃO */
+button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #38ff6a;
+    cursor: pointer;
 }
 
 /* LISTA */
 ul {
     flex: 1;
     overflow-y: auto;
+    margin-top: 10px;
 }
 
-/* 🔥 RESPONSIVO */
-@media (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .container {
-        width: 90vw;
-        height: auto;
-    }
-
-    .side-info {
-        text-align: center;
-    }
-
-    .parallax {
-        display: none; /* remove glitch no celular */
-    }
+li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
 </style>
 </head>
@@ -155,7 +163,9 @@ ul {
 
         <div class="container">
 
-            <h1>Copa Brawl</h1>
+            <h1>Copa Brawl Season 2</h1>
+
+            <p id="contador">0/64</p>
 
             <input type="text" id="nick" placeholder="Nick">
             <input type="text" id="id" placeholder="ID">
@@ -168,6 +178,25 @@ ul {
     </div>
 
 </div>
+
+<script>
+const parallax = document.getElementById("parallax")
+
+let x = 0
+let y = 0
+
+function animar() {
+    x += 0.15
+    y -= 0.15
+
+    parallax.style.transform =
+        `translate(${x}px, ${y}px) rotate(-25deg) scale(1.2)`
+
+    requestAnimationFrame(animar)
+}
+
+animar()
+</script>
 
 <script src="script.js"></script>
 
