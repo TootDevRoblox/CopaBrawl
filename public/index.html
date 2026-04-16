@@ -13,32 +13,34 @@
     font-family: 'Poppins', sans-serif;
 }
 
+/* 🔥 CENTRALIZAÇÃO SEM BUG */
 body {
     height: 100vh;
     overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background: linear-gradient(135deg, #04140c, #0b2e1a, #0f3d24);
 }
 
-/* 🌿 PARALLAX */
+/* 🌿 PARALLAX (SEM CORTE / SEM GLITCH) */
 .parallax {
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    top: -25%;
-    left: -25%;
+    position: fixed;
+    inset: -50%;
     background: url("ThrophyVines.png") repeat;
     background-size: 220px;
     opacity: 0.08;
     pointer-events: none;
-    transform: rotate(-25deg);
+
+    transform: rotate(-25deg) scale(1.2);
+    will-change: transform;
 }
 
-/* CENTRALIZAÇÃO */
+/* WRAPPER */
 .wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
 }
 
 /* 🧊 CONTAINER */
@@ -55,10 +57,10 @@ body {
         0 0 20px rgba(56,255,106,0.2),
         0 0 40px rgba(56,255,106,0.15);
 
-    overflow: hidden; /* 👈 impede qualquer vazamento */
+    overflow: hidden;
 }
 
-/* 🌿 VINES (CORRETO E PROFISSIONAL) */
+/* 🌿 VINES (PERFEITO) */
 .container::before {
     content: "";
     position: absolute;
@@ -69,7 +71,7 @@ body {
     pointer-events: none;
 }
 
-/* GARANTE QUE O CONTEÚDO FIQUE NA FRENTE */
+/* CONTEÚDO NA FRENTE */
 .container > * {
     position: relative;
     z-index: 1;
@@ -204,10 +206,12 @@ let x = 0
 let y = 0
 
 function animar() {
-    x += 0.2
-    y -= 0.2
+    x += 0.15
+    y -= 0.15
+
     parallax.style.transform =
-        `translate(${x}px, ${y}px) rotate(-25deg)`
+        `translate(${x}px, ${y}px) rotate(-25deg) scale(1.2)`
+
     requestAnimationFrame(animar)
 }
 
