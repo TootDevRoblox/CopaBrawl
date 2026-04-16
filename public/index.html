@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 📱 zoom liberado -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Copa Brawl</title>
 
@@ -18,8 +17,7 @@
 
 body {
     min-height: 100vh;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow-x: hidden;
 
     display: flex;
     justify-content: center;
@@ -43,13 +41,16 @@ body {
 .wrapper {
     display: flex;
     align-items: flex-start;
-    gap: 50px;
+    justify-content: center;
+    gap: 40px;
     padding: 20px;
+    flex-wrap: wrap;
 }
 
 /* 🌟 LATERAL */
 .side-info {
     color: white;
+    width: 100%;
     max-width: 260px;
 }
 
@@ -134,7 +135,8 @@ body {
     position: relative;
     z-index: 1;
 
-    width: 370px;
+    width: 100%;
+    max-width: 370px;
     min-height: 520px;
 
     display: flex;
@@ -158,16 +160,10 @@ h1 {
 
 .title-white {
     color: #fff;
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.5),
-        0 0 12px rgba(255,255,255,0.3);
 }
 
 .title-green {
     color: #38ff6a;
-    text-shadow:
-        0 0 10px rgba(56,255,106,0.7),
-        0 0 20px rgba(56,255,106,0.5);
 }
 
 /* CONTADOR */
@@ -185,6 +181,7 @@ input {
     border: none;
     background: #0b2e1a;
     color: #fff;
+    font-size: 16px;
 }
 
 input::placeholder {
@@ -205,6 +202,7 @@ button {
     color: #002b16;
     font-weight: bold;
     cursor: pointer;
+    font-size: 16px;
 }
 
 /* LISTA */
@@ -221,6 +219,42 @@ li {
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+
+    body {
+        align-items: flex-start;
+    }
+
+    .wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .side-info {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .brawler {
+        justify-content: center;
+    }
+
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .vine {
+        display: none;
+    }
 }
 </style>
 </head>
