@@ -1,17 +1,23 @@
 const lista = document.getElementById("lista")
 const contador = document.getElementById("contador")
 
-let players = []
 let total = 0
 const max = 64
 
 let isAdmin = false
 
+// ➕ ENVIAR PRO BACKEND
 function enviar() {
     const nick = document.getElementById("nick").value.trim()
     const id = document.getElementById("id").value.trim()
 
     if (!nick || !id) return
+
+    // 👑 admin simples
+    if (id === "admin123") {
+        isAdmin = true
+        alert("Modo admin ativado!")
+    }
 
     fetch("/add", {
         method: "POST",
@@ -34,34 +40,44 @@ function enviar() {
     })
 }
 
-function renderizar() {
-    lista.innerHTML = ""
+// 📋 CARREGAR DO BANCO
+function carregar() {
+    fetch("/list")
+    .then(res => res.json())
+    .then(data => {
+        lista.innerHTML = ""
 
-    players.forEach((player, index) => {
-        const li = document.createElement("li")
+        total = data.length
+        contador.innerText = `${total}/${max}`
 
-        // 👇 agora mostra certo
-        li.innerText = `${player.nick} - ${player.id}`
+        data.forEach(player => {
+            const li = document.createElement("li")
+            li.innerText = `${player.nick} - ${player.id}`
 
-        // 👑 botão só admin
-        if (isAdmin) {
-            const btn = document.createElement("button")
-            btn.innerText = "X"
-            btn.onclick = () => remover(index)
-            li.appendChild(btn)
-        }
+            // 👑 botão só pra admin
+            if (isAdmin) {
+                const btn = document.createElement("button")
+                btn.innerText = "X"
+                btn.onclick = () => deletar(player.id)
+                li.appendChild(btn)
+            }
 
-        lista.appendChild(li)
+            lista.appendChild(li)
+        })
     })
 }
 
-function remover(index) {
-    players.splice(index, 1)
-    total--
-    atualizar()
-    renderizar()
+// 🗑️ DELETAR NO BACKEND
+function deletar(id) {
+    fetch("/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+    })
+    .then(() => carregar())
 }
 
-function atualizar() {
-    contador.innerText = `${total}/${max}`
-}
+// 🚀 CARREGAR AO ABRIR
+carregar()
