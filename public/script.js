@@ -1,96 +1,44 @@
-// CONFIG
-const LIMITE = 64
-const CODIGO_ADM = "admin123" // 👈 muda isso depois
-
-// ELEMENTOS
 const lista = document.getElementById("lista")
 const contador = document.getElementById("contador")
 
-// ESTADO
-let players = JSON.parse(localStorage.getItem("players")) || []
-let isADM = false
+let total = 0
+const max = 64
 
-// INIT
-render()
-
-// FUNÇÃO PRINCIPAL
 function enviar() {
-    const nickInput = document.getElementById("nick")
-    const idInput = document.getElementById("id")
-
-    const nick = nickInput.value.trim()
-    const id = idInput.value.trim()
+    const nick = document.getElementById("nick").value.trim()
+    const id = document.getElementById("id").value.trim()
 
     if (!nick || !id) return
 
-    // 🔐 Ativar ADM
-    if (id === CODIGO_ADM) {
-        isADM = true
-        alert("Modo ADM ativado")
-        idInput.value = ""
+    if (total >= max) {
+        alert("Lotado!")
         return
     }
 
-    // 🚫 limite
-    if (players.length >= LIMITE) {
-        alert("Lista cheia!")
-        return
-    }
+    const isAdmin = id === "admin123"
 
-    // 🚫 duplicado
-    const existe = players.some(p => p.nick === nick || p.id === id)
-    if (existe) {
-        alert("Jogador já existe!")
-        return
-    }
+    const li = document.createElement("li")
 
-    // ADD
-    players.push({ nick, id })
+    li.innerHTML = `
+        ${nick} ${isAdmin ? "🛡️" : ""}
+        <button onclick="remover(this)">X</button>
+    `
 
-    salvar()
-    render()
+    lista.appendChild(li)
 
-    // limpar input
-    nickInput.value = ""
-    idInput.value = ""
+    total++
+    atualizar()
+
+    document.getElementById("nick").value = ""
+    document.getElementById("id").value = ""
 }
 
-// RENDER
-function render() {
-    lista.innerHTML = ""
-
-    players.forEach((p, index) => {
-        const li = document.createElement("li")
-
-        li.innerHTML = `
-            ${p.nick} (${p.id})
-            ${isADM ? `<button onclick="remover(${index})">X</button>` : ""}
-        `
-
-        lista.appendChild(li)
-    })
-
-    atualizarContador()
+function remover(btn) {
+    btn.parentElement.remove()
+    total--
+    atualizar()
 }
 
-// REMOVER (ADM)
-function remover(index) {
-    if (!isADM) return
-
-    players.splice(index, 1)
-
-    salvar()
-    render()
-}
-
-// CONTADOR
-function atualizarContador() {
-    if (contador) {
-        contador.textContent = `${players.length}/${LIMITE}`
-    }
-}
-
-// SALVAR
-function salvar() {
-    localStorage.setItem("players", JSON.stringify(players))
+function atualizar() {
+    contador.innerText = `${total}/${max}`
 }
