@@ -13,10 +13,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* 🔥 CENTRALIZAÇÃO */
+/* 🔥 BODY FIX MOBILE */
 body {
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
 
     display: flex;
     justify-content: center;
@@ -36,81 +36,61 @@ body {
 
     transform: rotate(-25deg) scale(1.2);
     will-change: transform;
+    backface-visibility: hidden;
 }
 
-/* WRAPPER PRINCIPAL */
+/* WRAPPER */
 .wrapper {
     display: flex;
     align-items: center;
     gap: 50px;
 }
 
-/* 🌟 LATERAL */
+/* LATERAL */
 .side-info {
     color: white;
     max-width: 220px;
 }
 
 .side-info h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.5),
-        0 0 12px rgba(255,255,255,0.2);
-}
-
-/* 🥇 OURO */
-.gold {
-    font-size: 18px;
-    font-weight: bold;
-
-    background: linear-gradient(90deg, #ffd700, #ffae00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    text-shadow:
-        0 0 6px rgba(255,215,0,0.6),
-        0 0 12px rgba(255,215,0,0.4);
-
     margin-bottom: 10px;
 }
 
-/* 🥈 PRATA */
-.silver {
-    font-size: 16px;
+/* OURO */
+.gold {
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffd700, #ffae00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
+/* PRATA */
+.silver {
     background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
-    text-shadow:
-        0 0 6px rgba(192,192,192,0.6),
-        0 0 12px rgba(192,192,192,0.4);
 }
 
-/* 🔥 ÁREA DO CARD (ISOLADA) */
+/* CARD AREA */
 .card-area {
     position: relative;
 }
 
-/* 🌿 VINE (AGORA INDEPENDENTE) */
+/* VINE */
 .vine {
     position: absolute;
     inset: -40px;
 
     background: url("Details01.png") center no-repeat;
     background-size: 115%;
-    opacity: 0.7;
-    transform: scaleY(1.35);
+    opacity: 0.5;
+    transform: scaleY(1.2);
 
     z-index: 2;
     pointer-events: none;
-
-    filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
 }
 
-/* 🧊 CONTAINER */
+/* CONTAINER */
 .container {
     position: relative;
     z-index: 1;
@@ -121,124 +101,38 @@ body {
     flex-direction: column;
 
     background: rgba(0,0,0,0.75);
-    padding: 40px;
+    padding: 30px;
     border-radius: 20px;
-    text-align: center;
-    color: #fff;
-
-    box-shadow:
-        0 0 20px rgba(56,255,106,0.2),
-        0 0 40px rgba(56,255,106,0.15);
+    color: white;
 
     overflow: hidden;
 }
 
-/* TÍTULO */
-h1 {
-    margin-bottom: 10px;
-    font-size: 30px;
-    font-weight: 900;
-}
-
-.title-white {
-    color: #ffffff;
-    text-shadow:
-        0 0 6px rgba(255,255,255,0.6),
-        0 0 12px rgba(255,255,255,0.3);
-}
-
-.title-green {
-    color: #38ff6a;
-    text-shadow:
-        0 0 8px #38ff6a,
-        0 0 16px rgba(56,255,106,0.6);
-}
-
-/* CONTADOR */
-#contador {
-    color: #38ff6a;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-/* INPUTS */
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background: #0b2e1a;
-    color: #fff;
-}
-
-input::placeholder {
-    color: #88c9a1;
-}
-
-input:focus {
-    box-shadow: 0 0 12px #38ff6a;
-}
-
-/* BOTÃO */
-button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(90deg, #38ff6a, #1ed760);
-    color: #002b16;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-button:hover {
-    background: linear-gradient(90deg, #1ed760, #0f9d3a);
-    transform: scale(1.03);
-}
-
 /* LISTA */
 ul {
-    margin-top: 15px;
-    list-style: none;
-
     flex: 1;
     overflow-y: auto;
-
-    padding-right: 5px;
 }
 
-ul::-webkit-scrollbar {
-    width: 6px;
-}
+/* 🔥 RESPONSIVO */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
 
-ul::-webkit-scrollbar-thumb {
-    background: #38ff6a;
-    border-radius: 10px;
-}
+    .container {
+        width: 90vw;
+        height: auto;
+    }
 
-li {
-    background: rgba(56,255,106,0.08);
-    padding: 8px;
-    border-radius: 8px;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-}
+    .side-info {
+        text-align: center;
+    }
 
-li:hover {
-    background: rgba(56,255,106,0.2);
-}
-
-li button {
-    background: #38ff6a;
-    color: #002b16;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+    .parallax {
+        display: none; /* remove glitch no celular */
+    }
 }
 </style>
 </head>
@@ -249,26 +143,19 @@ li button {
 
 <div class="wrapper">
 
-    <!-- 🌟 LATERAL -->
     <div class="side-info">
         <h2>Campeões da Season 1:</h2>
         <p class="gold">#1 xp.Mateus 🥇</p>
         <p class="silver">#2 Bob_Marley 🥈</p>
     </div>
 
-    <!-- 🔥 CARD AREA (ISOLADO) -->
     <div class="card-area">
 
         <div class="vine"></div>
 
         <div class="container">
 
-            <h1>
-                <span class="title-white">Copa Brawl:</span>
-                <span class="title-green"> Season 2</span>
-            </h1>
-
-            <p id="contador">0/64</p>
+            <h1>Copa Brawl</h1>
 
             <input type="text" id="nick" placeholder="Nick">
             <input type="text" id="id" placeholder="ID">
@@ -281,25 +168,6 @@ li button {
     </div>
 
 </div>
-
-<script>
-const parallax = document.getElementById("parallax")
-
-let x = 0
-let y = 0
-
-function animar() {
-    x += 0.15
-    y -= 0.15
-
-    parallax.style.transform =
-        `translate(${x}px, ${y}px) rotate(-25deg) scale(1.2)`
-
-    requestAnimationFrame(animar)
-}
-
-animar()
-</script>
 
 <script src="script.js"></script>
 
