@@ -38,9 +38,12 @@ body {
     will-change: transform;
 }
 
-/* WRAPPER */
+/* WRAPPER (AGORA EM LINHA) */
 .wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 50px;
 }
 
 /* 🌿 VINE */
@@ -49,9 +52,9 @@ body {
     inset: -40px;
 
     background: url("Details01.png") center no-repeat;
-    background-size: 120%;
+    background-size: 115%;
     opacity: 0.4;
-    transform: scaleY(1.30);
+    transform: scaleY(1.15);
 
     z-index: 2;
     pointer-events: none;
@@ -65,7 +68,7 @@ body {
     z-index: 1;
 
     width: 370px;
-    height: 520px; /* 🔥 trava o tamanho */
+    height: 520px;
     display: flex;
     flex-direction: column;
 
@@ -82,7 +85,52 @@ body {
     overflow: hidden;
 }
 
-/* TÍTULO */
+/* 🌟 LATERAL */
+.side-info {
+    color: white;
+    max-width: 220px;
+}
+
+/* TÍTULO LATERAL */
+.side-info h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,255,255,0.2);
+}
+
+/* 🥇 OURO */
+.gold {
+    font-size: 18px;
+    font-weight: bold;
+
+    background: linear-gradient(90deg, #ffd700, #ffae00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(255,215,0,0.6),
+        0 0 12px rgba(255,215,0,0.4);
+
+    margin-bottom: 10px;
+}
+
+/* 🥈 PRATA */
+.silver {
+    font-size: 16px;
+
+    background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 6px rgba(192,192,192,0.6),
+        0 0 12px rgba(192,192,192,0.4);
+}
+
+/* TÍTULO PRINCIPAL */
 h1 {
     margin-bottom: 10px;
     font-size: 30px;
@@ -148,7 +196,7 @@ button:hover {
     transform: scale(1.03);
 }
 
-/* 🔥 LISTA (SCROLL FIXO) */
+/* LISTA */
 ul {
     margin-top: 15px;
     list-style: none;
@@ -159,7 +207,6 @@ ul {
     padding-right: 5px;
 }
 
-/* SCROLL BONITA */
 ul::-webkit-scrollbar {
     width: 6px;
 }
@@ -169,7 +216,6 @@ ul::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
-/* ITENS */
 li {
     background: rgba(56,255,106,0.08);
     padding: 8px;
@@ -200,8 +246,17 @@ li button {
 
 <div class="wrapper">
 
+    <!-- 🌟 LADO ESQUERDO -->
+    <div class="side-info">
+        <h2>Campeões da Season 1:</h2>
+        <p class="gold">#1 xp.Mateus</p>
+        <p class="silver">#2 Bob_Marley</p>
+    </div>
+
+    <!-- 🌿 VINE -->
     <div class="vine"></div>
 
+    <!-- 🧊 CONTAINER -->
     <div class="container">
 
         <h1>
