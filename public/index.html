@@ -105,10 +105,11 @@ body {
 
 .vine {
     position: absolute;
-    top: -30px;
-    left: -30px;
-    right: -30px;
-    bottom: -30px;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%) scaleY(1.35);
     background: url("Details01.png") center no-repeat;
     background-size: contain;
     opacity: 0.7;
@@ -228,11 +229,9 @@ li {
     }
 
     .vine {
-        top: -15px;
-        left: -15px;
-        right: -15px;
-        bottom: -15px;
-        background-size: contain;
+        width: 115%;
+        height: 115%;
+        transform: translate(-50%, -50%) scaleY(1.25);
         opacity: 0.5;
         filter: none;
     }
