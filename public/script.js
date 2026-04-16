@@ -4,6 +4,8 @@ const contador = document.getElementById("contador")
 let total = 0
 const max = 64
 
+let isAdmin = false // 👈 controle global
+
 function enviar() {
     const nick = document.getElementById("nick").value.trim()
     const id = document.getElementById("id").value.trim()
@@ -15,14 +17,22 @@ function enviar() {
         return
     }
 
-    const isAdmin = id === "admin123"
+    // 👑 ativa admin
+    if (id === "admin123") {
+        isAdmin = true
+        alert("Modo admin ativado!")
+    }
 
     const li = document.createElement("li")
+    li.innerHTML = `${nick} ${isAdmin ? "🛡️" : ""}`
 
-    li.innerHTML = `
-        ${nick} ${isAdmin ? "🛡️" : ""}
-        <button onclick="remover(this)">X</button>
-    `
+    // 👇 SÓ cria botão se for admin
+    if (isAdmin) {
+        const btn = document.createElement("button")
+        btn.innerText = "X"
+        btn.onclick = () => remover(btn)
+        li.appendChild(btn)
+    }
 
     lista.appendChild(li)
 
