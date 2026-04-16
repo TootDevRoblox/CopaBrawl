@@ -6,18 +6,17 @@ const max = 64
 
 let isAdmin = false
 
-// ➕ ENVIAR PRO BACKEND
 function enviar() {
     const nick = document.getElementById("nick").value.trim()
     const id = document.getElementById("id").value.trim()
 
     if (!nick || !id) return
 
-    // 👑 ADMIN (NÃO SALVA)
     if (id === "admin123") {
         isAdmin = true
         alert("Modo admin ativado!")
-        return // 🚨 impede de ir pro banco
+        carregar()
+        return
     }
 
     fetch("/add", {
@@ -32,16 +31,16 @@ function enviar() {
         if (msg !== "ok") {
             alert(msg)
         } else {
+            document.getElementById("nick").value = ""
+            document.getElementById("id").value = ""
             carregar()
         }
     })
-    .catch(err => {
-        console.error(err)
+    .catch(() => {
         alert("Erro ao enviar")
     })
 }
 
-// 📋 CARREGAR DO BANCO
 function carregar() {
     fetch("/list")
     .then(res => res.json())
@@ -53,12 +52,16 @@ function carregar() {
 
         data.forEach(player => {
             const li = document.createElement("li")
-            li.innerText = `${player.nick} - ${player.id}`
 
-            // 👑 botão só pra admin
+            const span = document.createElement("span")
+            span.innerText = `${player.nick} - ${player.id}`
+
+            li.appendChild(span)
+
             if (isAdmin) {
                 const btn = document.createElement("button")
-                btn.innerText = "X"
+                btn.innerText = "✖"
+                btn.className = "delete-btn"
                 btn.onclick = () => deletar(player.id)
                 li.appendChild(btn)
             }
@@ -68,17 +71,18 @@ function carregar() {
     })
 }
 
-// 🗑️ DELETAR NO BACKEND
 function deletar(id) {
     fetch("/delete", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({
+            id,
+            adminKey: "admin123"
+        })
     })
     .then(() => carregar())
 }
 
-// 🚀 CARREGAR AO ABRIR
 carregar()
