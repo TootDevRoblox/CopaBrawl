@@ -1,29 +1,33 @@
 const express = require("express")
 const cors = require("cors")
+const path = require("path")
 const { createClient } = require("@supabase/supabase-js")
 
 const app = express()
+
 app.use(express.json())
 app.use(cors())
 
-// 🔐 ENV VARIABLES (Render)
+// 🌐 SERVIR FRONTEND (IMPORTANTE)
+app.use(express.static(path.join(__dirname, "public")))
+
+// 🔐 ENV VARIABLES
 const SUPABASE_URL = process.env.SUPABASE_URL
 const SUPABASE_KEY = process.env.SUPABASE_KEY
 
-// ⚠️ segurança básica
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("❌ ERRO: Variáveis do Supabase não carregadas!")
+    console.error("❌ ENV do Supabase não carregadas!")
 }
 
-// 🔗 conexão
+// 🔗 CONEXÃO
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-// 🧪 rota teste
+// 🏠 ROTA PRINCIPAL (abre o site)
 app.get("/", (req, res) => {
-    res.send("Servidor conectado ao Supabase 🚀")
+    res.sendFile(path.join(__dirname, "public", "index.html"))
 })
 
-// ➕ ADD PLAYER
+// ➕ ADICIONAR PLAYER
 app.post("/add", async (req, res) => {
     const { nick, id } = req.body
 
@@ -48,7 +52,7 @@ app.post("/add", async (req, res) => {
     }
 })
 
-// 📋 LISTAR
+// 📋 LISTAR PLAYERS
 app.get("/list", async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -65,7 +69,7 @@ app.get("/list", async (req, res) => {
     }
 })
 
-// 🗑️ DELETAR
+// 🗑️ DELETAR PLAYER
 app.post("/delete", async (req, res) => {
     const { id } = req.body
 
@@ -89,6 +93,7 @@ app.post("/delete", async (req, res) => {
     }
 })
 
+// 🚀 START
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
