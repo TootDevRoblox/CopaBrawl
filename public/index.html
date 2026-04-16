@@ -2,9 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Copa Brawl</title>
 
 <style>
@@ -18,15 +16,12 @@
 body {
     min-height: 100vh;
     overflow-x: hidden;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: linear-gradient(135deg, #04140c, #0b2e1a, #0f3d24);
 }
 
-/* 🌿 PARALLAX */
 .parallax {
     position: fixed;
     inset: -50%;
@@ -37,7 +32,6 @@ body {
     transform: rotate(-25deg) scale(1.2);
 }
 
-/* WRAPPER */
 .wrapper {
     display: flex;
     align-items: flex-start;
@@ -47,14 +41,12 @@ body {
     flex-wrap: wrap;
 }
 
-/* 🌟 LATERAL */
 .side-info {
     color: white;
     width: 100%;
     max-width: 260px;
 }
 
-/* 🔴 BRAWLERS */
 .brawlers-title {
     color: #ff3c3c;
     font-weight: bold;
@@ -79,7 +71,6 @@ body {
     font-size: 14px;
 }
 
-/* 🏆 CAMPEÕES */
 .champions {
     margin-top: 30px;
 }
@@ -89,35 +80,29 @@ body {
     margin-bottom: 10px;
 }
 
-/* 🥇 */
 .gold {
     font-weight: bold;
     background: linear-gradient(90deg, #ffd700, #ffae00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     text-shadow:
         0 0 6px rgba(255,215,0,0.6),
         0 0 12px rgba(255,215,0,0.4);
 }
 
-/* 🥈 */
 .silver {
     background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     text-shadow:
         0 0 6px rgba(192,192,192,0.6),
         0 0 12px rgba(192,192,192,0.4);
 }
 
-/* 🔥 CARD AREA */
 .card-area {
     position: relative;
 }
 
-/* 🌿 VINES */
 .vine {
     position: absolute;
     inset: -40px;
@@ -130,29 +115,23 @@ body {
     filter: drop-shadow(0 0 12px rgba(56,255,106,0.25));
 }
 
-/* 🧊 CARD */
 .container {
     position: relative;
     z-index: 1;
-
     width: 100%;
     max-width: 370px;
     min-height: 520px;
-
     display: flex;
     flex-direction: column;
-
     background: rgba(0,0,0,0.75);
     padding: 40px;
     border-radius: 20px;
     color: #fff;
-
     box-shadow:
         0 0 20px rgba(56,255,106,0.2),
         0 0 40px rgba(56,255,106,0.15);
 }
 
-/* TÍTULO */
 h1 {
     margin-bottom: 10px;
     font-size: 28px;
@@ -166,13 +145,11 @@ h1 {
     color: #38ff6a;
 }
 
-/* CONTADOR */
 #contador {
     color: #38ff6a;
     margin-bottom: 10px;
 }
 
-/* INPUT */
 input {
     width: 100%;
     padding: 12px;
@@ -192,7 +169,6 @@ input:focus {
     box-shadow: 0 0 12px #38ff6a;
 }
 
-/* BOTÃO */
 button {
     width: 100%;
     padding: 12px;
@@ -205,7 +181,6 @@ button {
     font-size: 16px;
 }
 
-/* LISTA */
 ul {
     margin-top: 10px;
     flex: 1;
@@ -221,7 +196,6 @@ li {
     justify-content: space-between;
 }
 
-/* 📱 MOBILE */
 @media (max-width: 768px) {
 
     body {
@@ -253,7 +227,11 @@ li {
     }
 
     .vine {
-        display: none;
+        opacity: 0.4;
+        transform: scaleY(1.1);
+        inset: -20px;
+        background-size: 100%;
+        filter: none;
     }
 }
 </style>
@@ -265,7 +243,6 @@ li {
 
 <div class="wrapper">
 
-    <!-- 🌟 LATERAL -->
     <div class="side-info">
 
         <div class="brawlers-title">Brawlers do Campeonato:</div>
@@ -293,7 +270,6 @@ li {
 
     </div>
 
-    <!-- 🔥 CARD -->
     <div class="card-area">
 
         <div class="vine"></div>
